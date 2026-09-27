@@ -1,0 +1,229 @@
+% XeLaTeX / Tectonic. Guide indépendant ; sources cliquables en dernière page.
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=17mm,top=17mm,bottom=19mm]{geometry}
+\usepackage{fontspec}
+\setmainfont{texgyrepagella}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\usepackage[french]{babel}
+\usepackage{amsmath,xcolor,tabularx,array,fancyhdr}
+\usepackage[colorlinks=true,urlcolor=teal,linkcolor=teal]{hyperref}
+\definecolor{ink}{HTML}{153342}
+\definecolor{teal}{HTML}{147D80}
+\definecolor{wash}{HTML}{EEF5F5}
+\definecolor{muted}{HTML}{55646D}
+\hypersetup{pdftitle={Concours et oraux scientifiques — MP, MPI, PC, PSI — 2026},pdfauthor={Projet X-IA}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\arraystretch}{1.4}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\sffamily\footnotesize\color{muted}X-IA / Guide des concours / Référence 2026}
+\fancyfoot[R]{\sffamily\footnotesize\color{muted}\thepage}
+\newcommand{\titre}[2]{{\sffamily\small\bfseries\color{teal}#1}\par\vspace{3mm}{\sffamily\bfseries\fontsize{24}{28}\selectfont #2}\par\vspace{3mm}}
+\newcommand{\inter}[1]{\par\vspace{3mm}{\sffamily\bfseries\large\color{teal}#1}\par}
+\newcommand{\note}[1]{\par{\small\color{muted}#1}\par}
+\newcommand{\bloc}[2]{\par\begingroup\setlength{\fboxsep}{4mm}\colorbox{wash}{\parbox{\dimexpr\linewidth-8mm\relax}{\sffamily\bfseries #1\par\normalfont #2}}\endgroup\par}
+\newcommand{\src}[2]{\hyperref[src:#1]{[#1, #2]}}
+\newcommand{\lien}[3]{\par\hypertarget{src:#1}{}\label{src:#1}\textbf{[#1]} \href{#3}{#2}\par}
+\begin{document}\color{ink}
+\titre{PRÉPA SCIENTIFIQUE / MP · MPI · PC · PSI}{Comprendre les concours,\par préparer ses oraux}
+{\large Maths, physique, coefficients et attentes du jury.}\par
+\note{Édition du 27 septembre 2026. Notices de la session 2026 ; rapports de jury 2025 pour certains formats et conseils. Ce guide indépendant ne remplace pas la notice de votre session.}
+\inter{Les familles à identifier}
+\begin{tabularx}{\linewidth}{@{}p{34mm}X@{}}
+\textbf{X et ENS} & Écrits en partie mutualisés ; oraux et coefficients propres à chaque école, filière et option. L'ENS Ulm, Lyon, Paris-Saclay et Rennes ne forment pas un concours unique. \\
+\textbf{Centrale-Supélec} & Banque d'épreuves utilisée par plusieurs écoles. Le guide détaille le groupe CentraleSupélec / principales écoles Centrale / SupOptique. \\
+\textbf{Mines-Ponts} & Un concours commun, avec des épreuves et pondérations distinctes selon la filière. \\
+\textbf{Mines-Télécom} & Utilise les écrits de la banque Mines-Ponts en MP, MPI, PC, PSI ; modalités d'oral à distinguer du concours Mines-Ponts. \\
+\textbf{CCINP} & Épreuves communes et écoles en banque : une école en banque peut utiliser une autre pondération ou des épreuves spécifiques. \\
+\textbf{e3a-Polytech} & Banque d'écrits, avec des modalités d'admission propres aux concours et écoles qui l'utilisent. \\
+\end{tabularx}
+\note{Références : notices et sites officiels [1--9], liens en fin de guide. Les concours et recrutements particuliers d'écoles sont signalés page 7 ; ce document n'est pas un annuaire exhaustif de toutes les formations.}
+\inter{Lire un coefficient sans se tromper}
+Le poids indiqué est \textbf{le coefficient de l'épreuve divisé par la somme de tous les coefficients retenus au classement final}, écrits compris, hors bonus et épreuves facultatives. Les TP et le sport sont inclus lorsqu'ils comptent. Les pourcentages sont calculés, arrondis à deux décimales.\par
+\bloc{Exemple : CentraleSupélec, MP}{Un oral de maths de coefficient 19 sur un total de 200 pèse \textbf{9,50\,\% du concours}. Il pèse 19\,\% du seul bloc oral : ce sont deux proportions différentes.}
+Ces poids décrivent une pondération des notes, pas une probabilité d'admission ni une règle de répartition du temps de travail. Les bonus, seuils, égalités, aménagements ou interclassements peuvent aussi influer sur le classement.\par
+\note{Périmètre : voie CPGE française habituelle, hors cycles internationaux et procédures étrangères spécifiques. Pour l'X, tableaux des candidats français. Les quatre filières restent séparées, même lorsqu'une épreuve est commune.}
+\newpage
+\titre{01 / ÉCOLE POLYTECHNIQUE}{L'X : maths et physique}
+\note{Coefficients 2026 : notice X, pages imprimées 11--12 et 17. \src{1}{tableaux}}
+\begin{tabularx}{\linewidth}{@{}l r r X X@{}}
+\textbf{Filière} & \textbf{Total} & \textbf{Oraux maths} & \textbf{Maths : coef. / total} & \textbf{Physique : coef. / total} \\\hline
+MP & 140 & 2 & I : 16/140 = 11,43\,\%\newline II : 16/140 = 11,43\,\% & 20/140 = 14,29\,\% \\
+MPI & 140 & 1 & 23/140 = 16,43\,\% & 20/140 = 14,29\,\% \\
+PC & 140 & 1 & 20/140 = 14,29\,\% & 16/140 = 11,43\,\% \\
+PSI & 111 & 1 & 18/111 = 16,22\,\% & 12/111 = 10,81\,\% \\
+\end{tabularx}
+\inter{Format réglementaire}
+Chaque interrogation de maths et de physique dure \textbf{50 minutes}, sans temps de préparation séparé indiqué par la notice. En MP, les deux oraux de maths sont distincts. En MPI, l'informatique a sa propre interrogation ; elle ne constitue pas un second oral de maths.\par
+L'\textbf{analyse de documents scientifiques (ADS)} dure 40 minutes après 2 heures de préparation. Ce n'est pas un oral de maths supplémentaire à compter dans la colonne ci-dessus.\par
+\inter{Physique : ne pas oublier les autres épreuves}
+En PC : TP de physique, 3 h, coefficient 8 ; TP de chimie, 3 h 30, coefficient 8. Chacun représente 5,71\,\% du total 140. En PSI : manipulation de physique, coefficient 6, soit 5,41\,\% du total 111 ; la notice renvoie aux modalités ENS pour sa durée. La chimie, l'ADS et les autres épreuves restent aussi à préparer.\par
+\note{Décomposition des totaux : MP/PC, 39 + 4 écrits, 92 oraux/TP, 5 sport ; MPI, 39 écrits, 96 oraux/TP, 5 sport ; PSI, 33 + 10 écrits, 64 oraux/TP, 4 sport.}
+\inter{Ce que nous conseillons de travailler}
+\textbf{Maths.} S'entraîner sur une question peu découpée : identifier les objets, tester un cas simple, annoncer une piste, puis construire un argument. Pour chaque résultat utilisé, savoir donner ses hypothèses et expliquer son lien avec le problème.\par
+\textbf{Physique.} Partir d'un schéma et du système étudié. Choisir une loi avec ses conditions d'application ; annoncer les approximations ; vérifier unités, signes, limites et ordre de grandeur du résultat. Une équation sans interprétation laisse une partie du raisonnement invisible.\par
+\bloc{Exercice d'entraînement personnel}{Sur un sujet du programme : formuler deux pistes, en choisir une et expliquer pourquoi. À la relance « quelle hypothèse utilisez-vous ? », identifier l'hypothèse, vérifier qu'elle est disponible, puis reprendre la preuve. Ce protocole est une proposition d'entraînement, pas un barème officiel.}
+\note{Les types précis de sujets varient avec la filière et le jury. Consulter les annales et rapports officiels X avant de choisir sa banque d'exercices. \src{10}{annales}}
+\newpage
+\titre{02 / ENS ULM}{L'option change les oraux}
+\note{Notice inter-ENS 2026, pages imprimées 15--18. Les colonnes Maths I / II désignent l'oral spécifique Ulm / l'oral commun correspondant. \src{2}{tableaux}}
+\begin{tabularx}{\linewidth}{@{}p{33mm}r r X X X@{}}
+\textbf{Filière / option} & \textbf{Total} & \textbf{Nb} & \textbf{Maths I} & \textbf{Maths II} & \textbf{Physique} \\\hline
+MP physique & 100 & 2 & 30 : 30\,\% & 15 : 15\,\% & 25 : 25\,\% \\
+MP informatique & 100 & 2 & 30 : 30\,\% & 10 : 10\,\% & Aucun \\
+MPI maths & 90 & 2 & 15 : 16,67\,\% & 15 : 16,67\,\% & 15 : 16,67\,\% \\
+MPI informatique & 90 & 1 & 20 : 22,22\,\% & Aucun & Aucun \\
+PC physique & 117 & 1 & \multicolumn{2}{l}{Maths UL : 20 : 17,09\,\%} & 26 : 22,22\,\% \\
+PC chimie & 117 & 1 & \multicolumn{2}{l}{Maths UL : 16 : 13,68\,\%} & 22 : 18,80\,\% \\
+PSI & 117 & 1 & \multicolumn{2}{l}{Maths USR : 23 : 19,66\,\%} & 30 : 25,64\,\% \\
+\end{tabularx}
+\note{Lecture : « 20 : 17,09\,\% » signifie coefficient 20, divisé par le total 117. Nb = nombre d'oraux de maths. Écrits + oraux : MP, 27 + 73 ; MPI, 27 + 63 ; PC, 28 + 89 ; PSI, 39 + 78. Les pourcentages sont recalculés à partir de la notice 2026.}
+\inter{Maths MP / MPI : deux expériences différentes}
+\textbf{Oral spécifique Ulm : 55 min sans préparation} dans le rapport 2025. La première partie laisse une grande autonomie ; le jury intervient davantage ensuite. Il faut explorer une piste et reconnaître une impasse, sans attendre un signe d'approbation à chaque ligne. Finir l'exercice n'est pas la seule manière de réussir. \src{11}{p. 1--3}\par
+\textbf{Oral commun : 45 min sans préparation}, au tableau dans le rapport 2025. La discussion porte sur une ou plusieurs questions ; la capacité à utiliser une indication compte. \src{12}{p. 2}\par
+\inter{PC et PSI : maths et modélisation}
+\textbf{Maths PC :} un oral commun Ulm--Lyon. Le rapport 2025 insiste sur le recul, la précision des preuves et la formalisation ; il ne donne pas de durée. Ne pas lui attribuer automatiquement les 45 ou 55 minutes des oraux MP. \src{14}{p. 1--2}\par
+\textbf{Maths PSI :} un oral commun Ulm--Saclay--Rennes ; le rapport 2025 confirme 30 min de préparation. Sa durée d'interrogation n'est pas précisée dans ce rapport : vérifier les modalités de convocation. \src{16}{p. 1}\par
+\textbf{Physique MP/MPI :} 50 min de résolution sans préparation, dans un créneau total d'une heure. \textbf{Physique PC/PSI :} 55 min sans préparation, sur une situation souvent ouverte à modéliser. Ces formats viennent des rapports 2025. \src{13}{p. 1} \src{15}{p. 1} \src{17}{p. 1}\par
+\bloc{À travailler en priorité}{Définitions précises, preuves du cours, choix d'une stratégie et réaction aux objections. En physique : construire puis critiquer un modèle. Éviter de réciter du hors-programme mal maîtrisé ou de transformer le dialogue en recherche d'approbation.}
+\note{PC : un TP de physique ou de chimie selon l'option, coef. 12 ; PSI : manipulation de physique, coef. 14. TIPE conservé en PC/PSI ; ne pas ajouter un TIPE au tableau Ulm MP/MPI 2026. Les durées historiques ne remplacent pas la convocation de la session visée.}
+\newpage
+\titre{03 / AUTRES ENS}{Une banque, plusieurs concours}
+\note{Coefficients de maths et totaux calculés par somme des colonnes de la notice inter-ENS 2026, p. 15--18. Les pourcentages portent toujours sur le concours complet. \src{2}{tableaux}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{46mm}r X@{}}
+\textbf{École, filière / option} & \textbf{Total} & \textbf{Oraux de maths : coef. et poids individuel} \\\hline
+Lyon, MP maths, options MP/MI & 37 & 2 : spécifique 6 (16,22\,\%) ; commun 4 (10,81\,\%) \\
+Lyon, MP concours informatique & 35,5 & 1 : 4 (11,27\,\%) \\
+Lyon, MPI concours maths & 38,5 & 2 : spécifique 6 (15,58\,\%) ; commun 4 (10,39\,\%) \\
+Lyon, MPI concours informatique & 35,5 & 1 : 4 (11,27\,\%) \\
+Lyon, PC & 57 & 1 : 4 (7,02\,\%) \\
+Paris-Saclay / Rennes, MP option MP & 52 & 2 : spécifique SR 12 (23,08\,\%) ; commun 8 (15,38\,\%) \\
+Paris-Saclay / Rennes, MP option MI & 49 & 1 : commun 8 (16,33\,\%) \\
+Paris-Saclay, MPI options maths/info & 39 & 1 : commun ULS 5 (12,82\,\%) \\
+Rennes, MPI & 36 & 0 : pas d'oral de maths dans ce tableau \\
+Paris-Saclay, PC physique/chimie & 63 & 0 : pas d'oral de maths dans ce tableau \\
+Paris-Saclay, PSI physique/SI ; Rennes, PSI & 51 & 1 : commun USR 5 (9,80\,\%) \\
+\end{tabularx}
+\note{U = Ulm ; L = Lyon ; S = Paris-Saclay ; R = Rennes. Un oral commun peut compter pour plusieurs candidatures avec des coefficients différents. « 0 » ne signifie pas que les maths sont absentes des écrits ou des compétences attendues. Lyon ne propose pas de concours PSI dans la notice considérée.}
+\inter{Ce que cela change pour l'entraînement}
+En MP, une option informatique peut retirer un oral de maths spécifique et ajouter de l'informatique, alors qu'une autre école garde deux oraux. En MPI, ne pas confondre les deux concours distincts de Lyon avec les options d'un concours unique à Ulm ou Paris-Saclay.\par
+Pour préparer un oral partagé, identifier sa \textbf{lettre de banque et son rapport}, puis son format. Les recommandations de l'oral Ulm spécifique ne s'appliquent pas mécaniquement à tous les oraux ENS. Les modalités exactes des épreuves propres à Lyon ou Saclay se vérifient sur leurs convocations et rapports.\par
+\bloc{Une fiche par candidature}{École + filière + option ; épreuves réellement passées ; coefficient et total ; préparation / passage ; outils autorisés ; deux points faibles observés. Cette fiche évite de préparer « l'oral ENS » comme une épreuve uniforme.}
+\inter{La physique reste distincte selon l'école}
+Le tableau de maths ne résume pas l'admission. Par exemple en PC à Paris-Saclay, les deux options utilisent physique, chimie et TP avec des coefficients différents, même sans oral de maths autonome. En PSI, la notice 2026 distingue désormais les voies Physique-PSI et SI-PSI à Paris-Saclay.\par
+\newpage
+\titre{04 / CENTRALE-SUPÉLEC}{Le tableau et l'ordinateur}
+\note{Groupe CentraleSupélec, Centrale Lyon, Lille, Nantes, Méditerranée et SupOptique, voie habituelle. Ne pas transférer ces coefficients à Arts et Métiers, à l'École navale ou aux cycles internationaux. Notices 2026 MP p. 21--24, MPI p. 21--23, PC p. 21--24, PSI p. 24--27. \src{3}{MP} \src{4}{MPI} \src{5}{PC} \src{6}{PSI}}
+\begin{tabularx}{\linewidth}{@{}l X X X@{}}
+\textbf{Filière} & \textbf{Maths} & \textbf{Maths-informatique} & \textbf{Physique / physique-chimie} \\\hline
+MP & 19/200 = 9,50\,\% & 19/200 = 9,50\,\% & 13/200 = 6,50\,\% par oral (2) \\
+MPI & 18/200 = 9\,\% & 18/200 = 9\,\% & 12/200 = 6\,\% (1 oral) \\
+PC & 12/200 = 6\,\% & 12/200 = 6\,\% & 12/200 = 6\,\% par oral (2) \\
+PSI & 12/200 = 6\,\% & 12/200 = 6\,\% & 12/200 = 6\,\% par oral (2) \\
+\end{tabularx}
+\note{Deux oraux de maths dans chacune des quatre filières. Total : 100 écrits + 100 oraux/TP. En PC, ajouter chimie-informatique, coef. 12 ; les deux oraux de physique sont physique et physique-informatique. En MP/PSI : physique-chimie et physique-chimie-informatique.}
+\inter{Les formats à répéter}
+\textbf{Maths et physique « au tableau » : 30 min}. \textbf{Épreuve avec informatique : 30 min de préparation + 30 min de passage}, avec ordinateur équipé notamment de Python. La MPI conserve maths-informatique mais n'a pas l'oral physique-chimie-informatique des autres filières.\par
+\textbf{TP :} physique-chimie en MP/MPI/PSI, physique ou chimie en PC, 3 h. PSI : TP de S2I, 4 h, en plus. Les TP d'informatique de MPI constituent une autre épreuve ; ne pas les confondre avec maths-informatique.\par
+\inter{Python : comprendre avant de lancer}
+\textbf{1. Traduire la question.} Identifier entrées, sorties, paramètres et domaine de validité.\par
+\textbf{2. Produire un calcul court.} Savoir écrire une fonction, une boucle, manipuler tableaux et matrices, tracer une courbe et interpréter une approximation.\par
+\textbf{3. Contrôler.} Tester un cas connu, vérifier indices et tailles, distinguer erreur numérique et phénomène mathématique.\par
+\textbf{4. Revenir à la preuve.} Un graphe suggère une propriété ; il ne démontre pas une affirmation générale. Expliquer ce que l'expérience apporte à l'argument.\par
+\bloc{Pièges à éviter}{Passer toute la préparation à déboguer ; montrer un graphique sans commenter ses axes ; attendre le résultat numérique pour choisir une méthode ; réciter une fonction Python sans savoir ce qu'elle calcule. Nos conseils d'entraînement complètent les notices.}
+\inter{Le cours reste central}
+Le rapport MP 2025 décrit pour l'oral de maths une question de cours, une application classique et une question plus exigeante accompagnée par l'examinateur. Pour maths-informatique, il faut aussi présenter ce qui a été compris d'un sujet long, sans supposer qu'il doit être entièrement terminé. \src{18}{maths et maths-informatique}\par
+\newpage
+\titre{05 / MINES-PONTS ET CCINP}{Une préparation précise par filière}
+\inter{Mines-Ponts : cours, initiative, endurance}
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\textbf{Filière} & \textbf{Un oral de maths} & \textbf{Un oral de physique} \\\hline
+MP & 12/71 = 16,90\,\% & 10/71 = 14,08\,\% \\
+MPI & 11/71 = 15,49\,\% & 7/71 = 9,86\,\% \\
+PC & 8/71 = 11,27\,\% & 10/71 = 14,08\,\% \\
+PSI & 9/71 = 12,68\,\% & 9/71 = 12,68\,\% \\
+\end{tabularx}
+Total 71 : 30 écrits + 41 admission. \textbf{En MP, ces 41 comprennent la reprise d'un écrit d'option, coef. 2} ; ce n'est pas un oral de plus. PC et PSI comportent aussi une épreuve mixte, coef. 6, soit 8,45\,\% du total. Le classement utilise un interclassement des équipes de jury. \src{7}{p. 19--20}\par
+Maths et physique : au moins deux exercices ; 15 min de préparation du premier, puis 50 à 60 min au tableau. Prévoir environ 1 h 15 en tout. La physique MP/PSI peut comporter de la chimie. \src{7}{p. 4--5}\par
+\textbf{À travailler :} partir vite sur une idée justifiée, garder de l'énergie pour le second exercice, défendre les hypothèses et utiliser une indication. Éviter le calcul silencieux prolongé, la formule hors contexte et l'abandon après une première piste infructueuse.\par
+\inter{CCINP : un format commun, des pondérations différentes}
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\textbf{Filière} & \textbf{Un oral de maths} & \textbf{Physique / chimie} \\\hline
+MP & 14/98 = 14,29\,\% & Physique-chimie : 12/98 = 12,24\,\% \\
+MPI & 8/98 = 8,16\,\% & Physique-chimie : 8/98 = 8,16\,\% \\
+PC & 8/98 = 8,16\,\% & Physique ou chimie : 9/98 = 9,18\,\% \\
+PSI & 8/98 = 8,16\,\% & Physique-chimie : 8/98 = 8,16\,\% \\
+\end{tabularx}
+Total 98 : 58 écrits + 40 oraux/TP. Tableau CCINP, pas celui de toutes les écoles en banque. Maths et physique/chimie : 30 min de préparation + 30 min de passage prévues dans le règlement. En PC, un tirage au sort répartit oral et TP entre physique et chimie ; TP coef. 9. \src{8}{p. 20--21}\par
+\textbf{Maths MP/MPI :} un exercice de la banque publique sur 8 points et un exercice propre au jury sur 12 points, sur deux domaines différents. Installation et formalités sont incluses dans les créneaux. \src{19}{cadre 2026}\par
+\textbf{Maths PSI :} présentation de l'exercice préparé puis questions sans préparation ; en PC, se reporter au cadre spécifique. La banque MP/MPI ne doit pas être assimilée à tous les oraux CCINP. \src{20}{cadres par filière}\par
+\textbf{À travailler :} apprendre les raisonnements de la banque, refaire sans corrigé, puis répondre à une variation. Une solution mémorisée sans hypothèses résiste mal aux relances.\par
+\newpage
+\titre{06 / LES AUTRES CANDIDATURES}{Identifier ce que l'école utilise}
+\inter{Mines-Télécom}
+Aux oraux propres du concours, \textbf{maths : 30 min sans préparation, coefficient 8}. L'autre épreuve scientifique, également 30 min et coef. 8, est physique en MP/PC, informatique en MPI, S2I en PSI. Anglais et entretien complètent le bloc oral, total 30. \src{21}{épreuves orales}\par
+\textbf{Dans le concours complet : 8/60 = 13,33\,\%} pour l'oral de maths, hors bonifications ; total 30 écrits + 30 oraux. L'autre épreuve scientifique a le même poids. Le ratio 8/30 = 26,67\,\% ne concerne que le bloc oral. La notice additionne écrits et oraux. \src{22}{notice} \src{23}{p. 8 et 14}\par
+Les candidats MP, MPI, PC, PSI inscrits et admissibles aux deux concours passent les oraux Mines-Ponts : leurs notes sont reprises selon une correspondance, avec une bonification d'harmonisation. Ce cas ne se résume donc pas au poids nominal ci-dessus. \src{23}{p. 10 et 14}\par
+\textbf{Entraînement proposé :} lecture rapide, schéma ou cas simple, mise en place immédiate d'un raisonnement expliqué ; traiter les relances comme des questions de fond. Consulter sa convocation pour déterminer quelle série d'épreuves doit être effectivement passée.\par
+\inter{e3a-Polytech et écoles en banque}
+La banque mutualise certaines épreuves écrites avec CCINP, mais n'a pas un unique oral de maths valable pour toutes les écoles. Consulter la fiche du concours ou de l'école : entretien, TIPE, éventuelles épreuves scientifiques et coefficients doivent être lus candidature par candidature. \src{9}{épreuves et règlement}\par
+\inter{Ne pas oublier les recrutements particuliers}
+ESPCI Paris est présente dans la banque PC X--ENS. Arts et Métiers et l'École navale apparaissent avec leurs propres modalités dans les notices Centrale. Des écoles en banque CCINP, notamment des formations de l'ENAC ou de l'École de l'air et de l'espace, ont aussi des épreuves spécifiques. Les coefficients du concours support ne s'appliquent donc pas automatiquement. \src{2}{PC} \src{3}{écoles} \src{8}{écoles en banque}\par
+\bloc{Avant de cocher un vœu}{Vérifier l'intitulé exact de la formation et son statut, la filière acceptée, les épreuves utilisées, les conditions particulières et la procédure d'intégration. Une même école peut proposer plusieurs voies de recrutement.}
+\inter{Liste de contrôle pour chaque oral}
+\begin{tabularx}{\linewidth}{@{}p{39mm}X@{}}
+\textbf{Temps} & Préparation séparée ? Durée effective au tableau ? Arrivée et formalités incluses ? \\
+\textbf{Supports} & Tableau, papier, ordinateur, documents, manipulation ? \\
+\textbf{Contenu} & Cours explicite, exercice ouvert, problème guidé, questions rapides, TP ? \\
+\textbf{Poids} & Coefficient individuel ; total retenu ; bonus à part ; oral commun à plusieurs écoles ? \\
+\textbf{Sources} & Notice de l'année visée, convocation, dernier rapport disponible. \\
+\end{tabularx}
+\newpage
+\titre{07 / S'ENTRAÎNER À RÉAGIR}{Faire progresser l'échange}
+Ces exercices de méthode sont nos propositions d'entraînement. Ils ne constituent ni une grille officielle de notation, ni une garantie de réussite.\par
+\inter{Le cycle à répéter}
+\bloc{Idée → cours → hypothèses → argument → relance}{Annoncer une piste ; nommer le résultat utilisé ; vérifier ses conditions ; écrire l'étape décisive ; écouter la relance et modifier le raisonnement si nécessaire.}
+\textbf{Quand l'examinateur challenge une étape}, ne pas interpréter immédiatement sa question comme un verdict. Identifier le point demandé : existence de l'objet, hypothèse, signe, domaine, passage à la limite, validité du modèle… Puis donner un argument vérifiable.\par
+\inter{Trois entraînements courts}
+\textbf{Maths, 5 minutes.} Prendre un théorème du programme. L'énoncer sans notes ; donner un exemple où il s'applique et un contre-exemple si une hypothèse disparaît. Le partenaire demande ensuite : « Où utilisez-vous cette hypothèse ? »\par
+\textbf{Physique, 10 minutes.} Décrire un phénomène familier. Définir système, variables, unités et approximation principale ; écrire une loi ; vérifier une limite. Le partenaire change un paramètre : expliquer ce qui doit être revu avant de recalculer.\par
+\textbf{Maths avec Python, 15 minutes.} Sur un problème du programme, choisir une expérience numérique courte. Annoncer ce qu'elle peut tester, l'exécuter, puis expliquer ce qu'il reste à démontrer. Le partenaire demande : « Votre observation est-elle une preuve ? »\par
+\inter{Comment mesurer un progrès réel}
+Après une séance, noter une preuve réussie seul, une erreur corrigée après indication, une notion à revoir et une question proche à refaire plus tard. Distinguer \textbf{réponse trouvée avec aide} et \textbf{raisonnement reconstruit sans aide}. Reposer une variation permet de vérifier que la correction a été comprise.\par
+La réactivité ne se résume pas à une vitesse de réponse : répondre au bon point, vérifier ce qui est contesté et exploiter une indication compte davantage que parler immédiatement.\par
+\inter{Compléter son profil dans X-IA}
+Indiquer la filière, la prépa, le rang actuel en maths \textbf{avec l'effectif de classe}, et les concours ou compétences visés. Ces informations sont facultatives et modifiables. Le rang sert de repère provisoire, pas de preuve d'un acquis ; le nom du lycée ne doit pas déterminer le niveau attribué.\par
+\bloc{Exemple d'objectif utile}{« MPI, 12e sur 40. Je vise Centrale et les Mines. Je sais faire les calculs, mais je veux mieux annoncer mes idées et justifier les hypothèses quand on me relance. »}
+\note{Le tuteur actuel de ce prototype travaille les séries numériques en maths. Le guide couvre davantage de concours et de matières ; cela ne signifie pas que l'application simule déjà tous ces oraux.}
+\newpage
+\titre{SOURCES / POUR VÉRIFIER}{Notices et rapports officiels}
+\note{Liens vérifiés le 27 septembre 2026. Les notices donnent les règles 2026 ; les rapports 2025 documentent les pratiques de cette session. Les pages indiquées dans le guide sont les numéros imprimés quand ils existent.}
+\begingroup\small\setlength{\parskip}{3.5pt}
+\lien{1}{École polytechnique — Notice du concours 2026}{https://www.polytechnique.edu/admission-cycle-ingenieur/sites/admission/files/content/Notice\%20du\%20concours\%202026\%20publi\%C3\%A9e.pdf}
+\lien{2}{Notice inter-ENS 2026 — version du 10 février 2026}{https://www.ens.psl.eu/sites/default/files/notice_interens_2026_mise_en_ligne_vf10022026_.pdf}
+\lien{3}{Centrale-Supélec — Notice MP 2026}{https://www.concours-centrale-supelec.fr/sites/default/files/documents/CCS_2026_MP.pdf}
+\lien{4}{Centrale-Supélec — Notice MPI 2026}{https://www.concours-centrale-supelec.fr/sites/default/files/documents/CCS_2026_MPI.pdf}
+\lien{5}{Centrale-Supélec — Notice PC 2026}{https://www.concours-centrale-supelec.fr/sites/default/files/documents/CCS_2026_PC.pdf}
+\lien{6}{Centrale-Supélec — Notice PSI 2026}{https://www.concours-centrale-supelec.fr/sites/default/files/documents/CCS_2026_PSI.pdf}
+\lien{7}{Mines-Ponts — Règlement 2026, version du 9 décembre 2025}{https://concoursminesponts.fr/wp-content/uploads/2025/12/reglement-2026-09.12.25.pdf}
+\lien{8}{CCINP — Règlement 2026}{https://www.concours-commun-inp.fr/_resource/R\%C3\%A8glement_VF_23-06.pdf?download=true}
+\lien{9}{e3a-Polytech — Épreuves, oraux et règlement}{https://www.e3a-polytech.fr/epreuves/}
+\lien{10}{École polytechnique — Annales et rapports des concours précédents}{https://www.polytechnique.edu/admission-cycle-ingenieur/en/node/258}
+\lien{11}{ENS — Rapport 2025, maths Ulm, MP et MPI}{https://banques-ecoles.fr/cms/wp-content/uploads/2025/11/Rapport_ORAL_MATH-ULM_2025.pdf}
+\lien{12}{ENS — Rapport 2025, maths commun ULSR}{https://banques-ecoles.fr/cms/wp-content/uploads/2025/11/Rapport_ORAL_Math_ULSR_2025.pdf}
+\lien{13}{ENS — Rapport 2025, physique Ulm, MP et MPI}{https://banques-ecoles.fr/cms/wp-content/uploads/2025/11/Rapport_Oral_Physique-Ulm-2025.pdf}
+\lien{14}{ENS — Rapport 2025, maths Ulm--Lyon, PC}{https://banques-ecoles.fr/cms/wp-content/uploads/2025/11/Rapport_Oral_Math_UL_PC_2025.pdf}
+\lien{15}{ENS — Rapport 2025, physique Ulm, PC}{https://banques-ecoles.fr/cms/wp-content/uploads/2025/11/rapport_concours_2025_PC_physique_ULM.pdf}
+\lien{16}{ENS — Rapport 2025, maths, PSI}{https://www.ens.psl.eu/sites/default/files/2025_psi_rapport_maths_oral.pdf}
+\lien{17}{ENS — Rapport 2025, physique Ulm, PSI}{https://www.ens.psl.eu/sites/default/files/2025_psi_rapport_physiqueulm_oral.pdf}
+\lien{18}{Centrale-Supélec — Rapport MP 2025, maths p. 78--86}{https://www.concours-centrale-supelec.fr/sites/default/files/documents/Rapports_Jury_2025_MP.pdf}
+\lien{19}{CCINP — Cadre de l'oral de maths MP/MPI, 23 octobre 2025}{https://www.concours-commun-inp.fr/_resource/annales\%20\%C3\%A9crits/Cadre_Mathematiques\%20MP\%20MPI_23.10.25.pdf?download=true}
+\lien{20}{CCINP — Cadres des oraux par filière, banque mise à jour}{https://www.concours-commun-inp.fr/fr/epreuves/les-epreuves-orales.html}
+\lien{21}{Mines-Télécom — Description et coefficients des oraux}{https://www.concours-mines-telecom.fr/le-concours-mines-telecom/les-epreuves-orales/}
+\lien{22}{Mines-Télécom — Documentation et notice 2026}{https://www.concours-mines-telecom.fr/documentation/}
+\lien{23}{Notice Mines-Télécom 2026 — copie textuelle consultée, p. 8, 10 et 14}{https://fr.scribd.com/document/959006232/Notice-Telecom-2026-BD}
+\endgroup
+\vfill
+\note{Les sommes et pourcentages sont des calculs de ce guide à partir des tableaux officiels. En cas de modification de la réglementation, la nouvelle notice prévaut. Les recommandations d'entraînement sont distinguées des règles officielles.}
+\end{document}
