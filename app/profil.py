@@ -29,6 +29,7 @@ class Profil:
         self.exercices_vus = []
         self.historique = []
         self.taches = {}
+        self.projet_eleve = {}
 
     def niveau(self, chapitre):
         return self.niveaux.get(chapitre, NIVEAU_DEPART)
@@ -64,6 +65,7 @@ class Profil:
             "exercices_vus": self.exercices_vus,
             "historique": self.historique,
             "taches": self.taches,
+            "projet_eleve": self.projet_eleve,
         }
 
     @classmethod
@@ -73,6 +75,7 @@ class Profil:
         profil.exercices_vus = donnees.get("exercices_vus", [])
         profil.historique = donnees.get("historique", [])
         profil.taches = donnees.get("taches", {})
+        profil.projet_eleve = donnees.get("projet_eleve", {})
         return profil
 
     def sauvegarder(self, chemin):
