@@ -18,6 +18,7 @@
     <h1>Votre colle de prépa.</h1>
     <p class="muted">Cours, démonstration, applications, puis exercices : le tuteur guide la progression.</p>
     <a href="{{ url_for('index') }}">Ouvrir l’ancienne interface</a>
+    <a href="{{ url_for('bilans') }}">Mes bilans</a>
   </header>
   <p class="muted">Étape : {{ {"cours": "Questions de cours", "demonstration": "Démonstration", "applications": "Applications directes", "exercices": "Exercices du catalogue"}[etape] }}.</p>
   <section class="card" aria-label="Discussion avec le tuteur" role="log">
@@ -46,7 +47,12 @@
   </section>
   <p id="math-warning" class="muted" hidden>Le rendu des formules est indisponible. Le texte reste lisible.</p>
   {% if erreur %}<p class="error" role="alert">{{ erreur }}</p>{% endif %}
-  {% if chapitre_selectionne %}
+  {% if bilan_id %}
+  <section class="card">
+    <p>Cette khôlle est terminée.</p>
+    <a href="{{ url_for('voir_bilan', session_id=bilan_id) }}">Voir mon bilan</a>
+  </section>
+  {% elif chapitre_selectionne %}
   <section class="card">
     <form method="post" id="chat-form">
       <input type="hidden" name="csrf" value="{{ session.csrf }}">
@@ -59,6 +65,12 @@
     </form>
 
   </section>
+  <form method="post">
+    <input type="hidden" name="csrf" value="{{ session.csrf }}">
+    <input type="hidden" name="tour" value="{{ session.tour }}">
+    <button type="submit" name="action" value="terminer">Terminer la khôlle et voir mon bilan</button>
+    <p class="muted hint">Le bilan porte sur les réponses déjà envoyées. Les questions non évaluées restent à vérifier.</p>
+  </form>
   {% endif %}
   <form method="post">
     <input type="hidden" name="csrf" value="{{ session.csrf }}">
