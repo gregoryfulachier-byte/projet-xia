@@ -7,12 +7,13 @@ from collections import OrderedDict
 from pathlib import Path
 from threading import Lock
 
-from flask import Flask, g, redirect, render_template, request, session, url_for
+from flask import Flask, abort, g, redirect, render_template, request, session, url_for
 from pipelex_sdk.client import PipelexAPIClient
 
 from app.web.auth import auth
 from app.evaluation import evaluer_reponse
 from app.agent import Agent
+from app.bilan import terminer_colle
 from app.chapitres import nom_chapitre
 from app.profil import GAINS, Profil, charger_exercices, choisir_exercice
 
@@ -85,6 +86,18 @@ def create_app(config=None):
                     conversations.pop(identifiant)
                     session["conversation"] = secrets.token_urlsafe(32)
                     return redirect(url_for("chat"))
+                elif request.form.get("action") == "terminer":
+                    try:
+                        bilan = terminer_colle(g.profil_path, agent)
+                    except ValueError as exc:
+                        erreur, statut = str(exc), 400
+                    except OSError:
+                        app.logger.exception("Échec de sauvegarde du bilan")
+                        erreur, statut = "Le bilan n’a pas pu être sauvegardé. Réessayez.", 503
+                    else:
+                        return redirect(url_for("voir_bilan", session_id=bilan["session_id"]))
+                elif agent.session_colle in Profil.charger(g.profil_path).bilans:
+                    return redirect(url_for("voir_bilan", session_id=agent.session_colle))
                 elif selection and (agent.chapitre is not None or request.form.get("chapitre") not in choix):
                     erreur, statut = "Choix de chapitre indisponible.", 400
                 elif request.form.get("action") and not selection:
@@ -112,7 +125,24 @@ def create_app(config=None):
                         return redirect(url_for("chat"))
             return render_template("chat.html", messages=agent.messages, chapitres=list(map(nom_chapitre, agent.chapitres)),
                                    chapitre_selectionne=agent.chapitre is not None,
-                                   message=message, erreur=erreur, etape=agent.etape), statut
+                                   message=message, erreur=erreur, etape=agent.etape,
+                                   bilan_id=agent.session_colle if agent.session_colle in
+                                   Profil.charger(g.profil_path).bilans else None), statut
+
+    @app.get("/bilans")
+    def bilans():
+        with verrou:
+            anciens = sorted(Profil.charger(g.profil_path).bilans.values(),
+                             key=lambda b: b["fin"], reverse=True)
+        return render_template("bilans.html", bilans=anciens)
+
+    @app.get("/bilans/<session_id>")
+    def voir_bilan(session_id):
+        with verrou:
+            bilan = Profil.charger(g.profil_path).bilans.get(session_id)
+        if bilan is None:
+            abort(404)
+        return render_template("bilan.html", bilan=bilan)
 
     @app.route("/classique", methods=["GET", "POST"])
     def index():
