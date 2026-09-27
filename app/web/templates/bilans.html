@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mes bilans · Mathématiques</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body><main>
+  {% include "compte.html" %}
+  <h1>Mes bilans de khôlle</h1>
+  <p><a href="{{ url_for('chat') }}">Retour au tuteur</a></p>
+  {% for bilan in bilans %}
+  <article class="card">
+    <h2><a href="{{ url_for('voir_bilan', session_id=bilan.session_id) }}">{{ bilan.chapitre|nom_chapitre }}</a></h2>
+    <p>Terminée le {{ bilan.fin[:10] }} à {{ bilan.fin[11:16] }} UTC.</p>
+    <p>{{ bilan.compteurs.valide }} question(s) validée(s), {{ bilan.compteurs.a_retravailler }} à retravailler.</p>
+  </article>
+  {% else %}
+  <p>Aucun bilan enregistré. À la fin d’une séance, utilisez « Terminer la khôlle et voir mon bilan ».</p>
+  {% endfor %}
+</main></body>
+</html>
