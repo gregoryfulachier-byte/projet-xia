@@ -1,0 +1,126 @@
+% Compiler avec XeLaTeX (Overleaf : Menu > Compilateur > XeLaTeX),
+% ou avec : tectonic 10-reflexes-oral-kholle.tex
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=17mm,top=16mm,bottom=18mm]{geometry}
+\usepackage{fontspec}
+\setmainfont{texgyrepagella}[Extension=.otf,UprightFont=*-regular,
+  BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,
+  BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb,xcolor,tabularx,fancyhdr}
+\usepackage[colorlinks=true,urlcolor=teal,linkcolor=teal]{hyperref}
+\definecolor{ink}{HTML}{153342}
+\definecolor{teal}{HTML}{147D80}
+\definecolor{muted}{HTML}{55646D}
+\definecolor{wash}{HTML}{EEF5F5}
+\definecolor{line}{HTML}{D6E4E6}
+\hypersetup{pdftitle={10 réflexes pour conduire son oral de concours},
+  pdfsubject={Fiche pratique - khôlles et oraux scientifiques de prépa},
+  pdfauthor={Projet X-IA}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\sffamily\footnotesize\color{muted}X-IA\enspace /\enspace Fiche d'entraînement à l'oral}
+\fancyfoot[R]{\sffamily\footnotesize\color{muted}\thepage\,/\,2}
+\newcommand{\repere}[4]{%
+  \begin{minipage}{\linewidth}
+  \begin{tabularx}{\linewidth}{@{}p{10mm}@{\hspace{3mm}}X@{}}
+  {\sffamily\bfseries\fontsize{20}{22}\selectfont\color{teal}#1}&
+  {\sffamily\bfseries\large\color{ink}#2}\par\vspace{2mm}
+  #3\par\vspace{1mm}
+  {\small\color{teal}\textit{#4}}
+  \end{tabularx}
+  \end{minipage}\par\vspace{4.3mm}}
+\newcommand{\bandeau}[2]{%
+  \begingroup\setlength{\fboxsep}{4mm}%
+  \colorbox{wash}{\parbox{\dimexpr\linewidth-8mm\relax}{%
+  {\sffamily\bfseries\color{ink}#1}\par\vspace{2mm}#2}}%
+  \endgroup}
+\begin{document}
+\color{ink}
+{\sffamily\bfseries\small\color{teal}PRÉPA SCIENTIFIQUE\enspace /\enspace KHÔLLES ET CONCOURS}\par
+\vspace{3mm}
+{\sffamily\bfseries\fontsize{27}{30}\selectfont 10 réflexes pour\par conduire son oral}\par
+\vspace{3mm}
+{\large Faire comprendre son idée, l'ancrer dans le cours,\par puis la défendre et l'ajuster dans le dialogue.}\par
+\vspace{3mm}
+{\small\color{muted}Des repères pour progresser, sans garantie de note : le fond scientifique reste essentiel.}
+\par\vspace{5mm}
+
+\repere{01}{Reformuler la question}
+{Précise les objets, les données et ce qu'il faut établir. En physique, fixe le système, le référentiel et les hypothèses du modèle.}
+{« Je cherche à montrer que… ; l'hypothèse qui semble utile est… »}
+
+\repere{02}{Annoncer l'idée avant le calcul}
+{Choisis une piste et explique son intérêt. Donne un plan court ; une liste de méthodes possibles sans choix ne fait pas avancer.}
+{« Je vais majorer ce terme pour me ramener à une série connue. »}
+
+\repere{03}{Rattacher explicitement l'idée au cours}
+{Nomme le résultat pertinent et précise ce qu'il permet de conclure. Si une définition ou une preuve est demandée, donne-la avec précision.}
+{« Le théorème spectral me donne ici une base orthonormée de vecteurs propres. »}
+
+\repere{04}{Vérifier les hypothèses}
+{Fais le lien entre les conditions du théorème et les données. Vérifie aussi que les objets manipulés existent et que les opérations sont licites.}
+{« La matrice est réelle et symétrique : le théorème spectral s'applique. »}
+
+\repere{05}{Rendre le raisonnement visible}
+{Explique les étapes décisives, distingue conjecture et preuve, garde des notations stables. Organise le tableau et laisse le jury voir ce que tu écris.}
+{« Ce calcul suggère une limite ; il reste maintenant à prouver la convergence. »}
+
+\vfill
+\bandeau{LE FIL À GARDER}{%
+\centering\sffamily\bfseries\large
+Objectif $\longrightarrow$ Idée $\longrightarrow$ Cours $\longrightarrow$ Hypothèses $\longrightarrow$ Preuve}
+
+\newpage
+{\sffamily\bfseries\small\color{teal}PENDANT L'ÉCHANGE}\par
+\vspace{3mm}
+{\sffamily\bfseries\fontsize{23}{26}\selectfont Écouter, justifier, rebondir}\par
+\vspace{4.5mm}
+
+\repere{06}{Accueillir une relance sans paniquer}
+{Écoute la question jusqu'au bout. Une demande de justification ne signifie pas que tout est faux : réponds au point précis, puis reprends ton raisonnement.}
+{« Vous me demandez pourquoi cette majoration est valable : voici l'argument. »}
+
+\repere{07}{Transformer l'indication en action}
+{Reformule l'aide reçue, puis utilise-la concrètement. Être réactif, c'est identifier la prochaine étape utile, avec le temps de réflexion nécessaire.}
+{« Votre indication me conduit à étudier les sommes partielles ; je les note $S_n$. »}
+
+\repere{08}{Corriger une erreur et garder le cap}
+{Repère la ligne fautive, explique la correction et ses conséquences. Si ton argument reste valable, justifie-le calmement ; suis une réorientation demandée.}
+{« J'ai divisé par une quantité qui peut être nulle. Je distingue les deux cas. »}
+
+\repere{09}{Gérer un blocage et son temps}
+{Dis précisément ce qui manque. Reviens à la définition, teste un cas simple ou exploite une hypothèse inutilisée. Évite le silence prolongé et les calculs sans objectif.}
+{« Il me manque une borne indépendante de $n$ ; je cherche une majoration uniforme. »}
+
+\repere{10}{Conclure et contrôler le résultat}
+{Réponds explicitement à la question. Vérifie un cas limite ; en physique, contrôle unités, signe et ordre de grandeur. Distingue ce qui est établi de ce qui reste ouvert.}
+{« J'ai démontré la convergence ; la valeur de la somme reste à déterminer. »}
+
+\bandeau{EXEMPLE ORIGINAL : RÉAGIR À UNE OBJECTION}{%
+\small
+\textbf{Sujet.} Étudier la série de terme général $u_n=1/[n(n+1)]$, pour $n\geq1$.\par
+\textbf{Élève.} « $u_n\to 0$, donc $\sum u_n$ converge. »\par
+\textbf{Colleur.} « Que dit cette règle pour $u_n=1/n$ ? »\par
+\textbf{Élève.} « La série harmonique diverge : mon critère était insuffisant.
+Je reprends $u_n=\dfrac{1}{n(n+1)}$, pour $n\geq1$ :
+$u_n=\dfrac1n-\dfrac1{n+1}$. Ainsi,
+$S_N=1-\dfrac1{N+1}\to1$. Par la définition de la convergence d'une série,
+la série converge et sa somme vaut $1$. »\par\vspace{1mm}
+\textbf{À observer :} l'élève utilise le contre-exemple, corrige son idée,
+mobilise une définition du cours et termine la preuve.}
+
+\vfill
+{\footnotesize\color{muted}
+\textbf{Appuis et usage.} Fiche pédagogique originale ; les phrases et le dialogue sont des exemples d'entraînement.
+Repères de jury :
+\href{https://concoursminesponts.fr/wp-content/uploads/2025/10/Rapport-Oral-2025-VF.pdf#page=7}{Mines-Ponts, rapport oral 2025, p. 3 et 6--8}
+(méthode, hypothèses, interaction) ;
+\href{https://www.concours-centrale-supelec.fr/sites/default/files/documents/Rapports_Jury_2025_MP.pdf#page=78}{Centrale-Supélec, rapport MP 2025, p. 78--80}
+(cours, clarté, écoute et tableau). Les modalités dépendent de l'épreuve.}
+\end{document}
