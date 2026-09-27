@@ -10,6 +10,7 @@ from flask import Blueprint, current_app, g, redirect, render_template, request,
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.profil import Profil
+from app.projet_eleve import CHAMPS, FILIERES, lire_projet
 
 auth = Blueprint("auth", __name__)
 verrou_comptes = Lock()
@@ -41,7 +42,7 @@ def authentifier():
                 g.profil_path = Path(current_app.config["PROFILS_DIR"]) / f"{identifiant}.json"
     if g.profil_path is None:
         session.pop("utilisateur", None)
-        if request.endpoint not in ("auth.connexion", "auth.inscription", None):
+        if request.endpoint not in ("auth.connexion", "auth.inscription", "guide_kholle", "guide_concours", None):
             return redirect(url_for("auth.connexion"))
 
 
@@ -50,6 +51,13 @@ def formulaire(inscription=False):
         return redirect(url_for("chat"))
     erreur, statut = None, 200
     identifiant = request.form.get("identifiant", "").strip().lower()
+    projet = {cle: request.form.get(cle, "") for cle in CHAMPS}
+    projet_valide = {}
+    if inscription and request.method == "POST":
+        try:
+            projet_valide = lire_projet(projet)
+        except ValueError as exc:
+            erreur, statut = str(exc), 400
     if request.method == "POST":
         mot_de_passe = request.form.get("mot_de_passe", "")
         if not csrf_valide():
@@ -58,7 +66,7 @@ def formulaire(inscription=False):
             erreur, statut = "Utilisez 1 à 64 lettres sans accent, chiffres, tirets ou underscores (hors noms réservés).", 400
         elif not 1 <= len(mot_de_passe) <= 1024:
             erreur, statut = "Le mot de passe doit contenir entre 1 et 1 024 caractères.", 400
-        else:
+        elif erreur is None:
             with verrou_comptes:
                 comptes = charger_comptes()
                 if inscription:
@@ -68,7 +76,9 @@ def formulaire(inscription=False):
                         comptes[identifiant] = {"mot_de_passe": generate_password_hash(mot_de_passe)}
                         dossier = Path(current_app.config["PROFILS_DIR"])
                         dossier.mkdir(parents=True, exist_ok=True)
-                        Profil(identifiant).sauvegarder(dossier / f"{identifiant}.json")
+                        profil = Profil(identifiant)
+                        profil.projet_eleve = projet_valide
+                        profil.sauvegarder(dossier / f"{identifiant}.json")
                         chemin = Path(current_app.config["UTILISATEURS_PATH"])
                         chemin.parent.mkdir(parents=True, exist_ok=True)
                         temporaire = chemin.with_suffix(".json.tmp")
@@ -84,7 +94,8 @@ def formulaire(inscription=False):
                 session["utilisateur"] = identifiant
                 session["csrf"] = secrets.token_urlsafe(32)
                 return redirect(url_for("chat"))
-    return render_template("auth.html", inscription=inscription, identifiant=identifiant, erreur=erreur), statut
+    return render_template("auth.html", inscription=inscription, identifiant=identifiant,
+                           erreur=erreur, projet=projet, filieres=FILIERES), statut
 
 
 @auth.route("/connexion", methods=["GET", "POST"])

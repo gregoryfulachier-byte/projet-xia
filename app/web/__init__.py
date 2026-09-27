@@ -10,11 +10,12 @@ from threading import Lock
 from flask import Flask, g, redirect, render_template, request, session, url_for
 from pipelex_sdk.client import PipelexAPIClient
 
-from app.web.auth import auth
+from app.web.auth import auth, csrf_valide
 from app.evaluation import evaluer_reponse
 from app.agent import Agent
 from app.chapitres import nom_chapitre
 from app.profil import GAINS, Profil, charger_exercices, choisir_exercice
+from app.projet_eleve import CHAMPS, FILIERES, lire_projet
 
 ROOT = Path(__file__).resolve().parents[2]
 VERDICTS = {
@@ -53,6 +54,35 @@ def create_app(config=None):
     app.register_blueprint(auth)
     verrou = Lock()
     conversations = OrderedDict()
+
+    @app.get("/reussir-sa-kholle")
+    def guide_kholle():
+        return render_template("guide_kholle.html")
+
+    @app.get("/guide-concours")
+    def guide_concours():
+        return render_template("guide_concours.html")
+
+    @app.route("/mon-profil", methods=["GET", "POST"])
+    def projet_eleve():
+        erreur, statut = None, 200
+        with verrou:
+            profil = Profil.charger(g.profil_path)
+            projet = profil.projet_eleve
+            if request.method == "POST":
+                projet = {cle: request.form.get(cle, "") for cle in CHAMPS}
+                if not csrf_valide():
+                    erreur, statut = "La session a expiré. Rechargez la page.", 400
+                else:
+                    try:
+                        profil.projet_eleve = lire_projet(projet)
+                    except ValueError as exc:
+                        erreur, statut = str(exc), 400
+                    else:
+                        profil.sauvegarder(g.profil_path)
+                        return redirect(url_for("projet_eleve", enregistre="1"))
+        return render_template("profil_eleve.html", projet=projet, filieres=FILIERES,
+                               erreur=erreur, enregistre=request.args.get("enregistre") == "1"), statut
 
     @app.route("/", methods=["GET", "POST"])
     def chat():
