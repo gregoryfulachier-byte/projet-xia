@@ -1,0 +1,86 @@
+{
+  "nom": "verification-profil",
+  "niveaux": {},
+  "exercices_vus": [],
+  "historique": [],
+  "taches": {
+    "6f044307249b433c813bcaaa86f2bae1": {
+      "id": "6f044307249b433c813bcaaa86f2bae1",
+      "exercice_id": "cours-ba7dca37c89a490f8018c41cfabef932",
+      "enonce": "Donnez-moi la définition d'une série convergente.",
+      "session": "79617f87ecde48c580df446668354ec0",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "cours",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 0,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "aucune",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [
+        "Une serie de terme general u_n converge lorsque la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n admet une limite finie S. Cette limite S est la somme de la serie."
+      ],
+      "evaluations": [
+        {
+          "reponse": "Une serie de terme general u_n converge lorsque la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n admet une limite finie S. Cette limite S est la somme de la serie.",
+          "verdict": "correcte",
+          "type_erreur": "aucune",
+          "explication": "La définition est correcte : la série converge lorsque la suite de ses sommes partielles $S_n$ admet une limite finie, laquelle est sa somme."
+        }
+      ],
+      "source": "16.1.5",
+      "page_source": {
+        "fichier": "data/cours/analyse.pdf",
+        "pdf": [
+          140
+        ],
+        "imprimee": [
+          138
+        ]
+      },
+      "nature": "definition",
+      "acquise": true,
+      "cloturee": true,
+      "decision": {
+        "action": "approfondir",
+        "acquise": true,
+        "raison": "Réponse correcte enregistrée par le serveur."
+      }
+    },
+    "6f8c9d5b883141a7af49f2e51db587c5": {
+      "id": "6f8c9d5b883141a7af49f2e51db587c5",
+      "exercice_id": "cours-807f69cb5e5b40399fd58aaf64f947a1",
+      "enonce": "Donnez-moi la définition d'une série absolument convergente.",
+      "session": "79617f87ecde48c580df446668354ec0",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "cours",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 0,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "non_determinable",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [],
+      "evaluations": [],
+      "source": "16.2.3",
+      "page_source": {
+        "fichier": "data/cours/analyse.pdf",
+        "pdf": [
+          143
+        ],
+        "imprimee": [
+          141
+        ]
+      },
+      "nature": "definition"
+    }
+  }
+}

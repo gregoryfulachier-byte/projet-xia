@@ -1,0 +1,5 @@
+{
+  "verification-profil": {
+    "mot_de_passe": "scrypt:32768:8:1$g41CAZTFz5gNp4D3$a106f2061442954fbce688e998509da10756eafd8de80b1dda10b11a9bc183b4c906616a70a1551c9d3db55d7ace9c4267a71e4463b4768f55b6c6f0ab83b34a"
+  }
+}

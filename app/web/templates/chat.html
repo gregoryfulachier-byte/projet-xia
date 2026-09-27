@@ -23,9 +23,19 @@
   <section class="card" aria-label="Discussion avec le tuteur" role="log">
     <article class="chat-message assistant">
       <h2>Tuteur</h2>
-      <p>Bonjour ! Quel chapitre souhaitez-vous travailler ? Nous commencerons par les définitions et théorèmes du cours. Je déciderai de la suite selon vos réponses.</p>
-      {% if chapitres %}<p class="muted">Chapitres disponibles : {{ chapitres|join(', ') }}.</p>
+      <p>Choisissez votre chapitre</p>
+      {% if not chapitre_selectionne %}
+      {% if chapitres %}
+      <form method="post">
+        <input type="hidden" name="csrf" value="{{ session.csrf }}">
+        <input type="hidden" name="tour" value="{{ session.tour }}">
+        <input type="hidden" name="action" value="chapitre">
+        {% for chapitre in chapitres %}
+        <button type="submit" name="chapitre" value="{{ loop.index0 }}">{{ chapitre }}</button>
+        {% endfor %}
+      </form>
       {% else %}<p class="muted">La banque d’exercices est vide pour le moment.</p>{% endif %}
+      {% endif %}
     </article>
     {% for item in messages %}
     <article class="chat-message {{ item.role }}" {% if loop.last %}id="last-message" tabindex="-1"{% endif %}>
@@ -36,18 +46,20 @@
   </section>
   <p id="math-warning" class="muted" hidden>Le rendu des formules est indisponible. Le texte reste lisible.</p>
   {% if erreur %}<p class="error" role="alert">{{ erreur }}</p>{% endif %}
+  {% if chapitre_selectionne %}
   <section class="card">
     <form method="post" id="chat-form">
       <input type="hidden" name="csrf" value="{{ session.csrf }}">
       <input type="hidden" name="tour" value="{{ session.tour }}">
       <label for="message">Votre message</label>
       <p class="muted hint" id="chat-hint">Partagez votre raisonnement. Vous pouvez demander une correction à tout moment. Formules : $…$.</p>
-      <textarea id="message" name="message" rows="4" maxlength="12000" required aria-describedby="chat-hint" placeholder="Je voudrais travailler le chapitre…">{{ message }}</textarea>
+      <textarea id="message" name="message" rows="4" maxlength="12000" required aria-describedby="chat-hint" placeholder="Votre raisonnement…">{{ message }}</textarea>
       <button type="submit" id="send-message">Envoyer</button>
       <span id="chat-pending" role="status" hidden>Le tuteur réfléchit…</span>
     </form>
 
   </section>
+  {% endif %}
   <form method="post">
     <input type="hidden" name="csrf" value="{{ session.csrf }}">
     <input type="hidden" name="tour" value="{{ session.tour }}">

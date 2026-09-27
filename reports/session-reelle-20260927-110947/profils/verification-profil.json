@@ -1,0 +1,117 @@
+{
+  "nom": "verification-profil",
+  "niveaux": {},
+  "exercices_vus": [],
+  "historique": [],
+  "taches": {
+    "696a77234f264d1392398b2925aca8af": {
+      "id": "696a77234f264d1392398b2925aca8af",
+      "exercice_id": "cours-b4e84ed86d0b49a0ad32484e73acd273",
+      "enonce": "Donnez-moi la définition d'une série convergente.",
+      "session": "c613b481fa954a0186a03426e1c8a41b",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "cours",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 0,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "aucune",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [
+        "Une serie de terme general u_n converge si la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n admet une limite finie S. Cette limite S est la somme de la serie."
+      ],
+      "evaluations": [
+        {
+          "reponse": "Une serie de terme general u_n converge si la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n admet une limite finie S. Cette limite S est la somme de la serie.",
+          "verdict": "correcte",
+          "type_erreur": "aucune",
+          "explication": "La définition est correcte : la série converge exactement lorsque la suite de ses sommes partielles admet une limite finie, qui est alors appelée somme de la série."
+        }
+      ],
+      "source": "16.1.5",
+      "page_source": {
+        "fichier": "data/cours/analyse.pdf",
+        "pdf": [
+          140
+        ],
+        "imprimee": [
+          138
+        ]
+      },
+      "nature": "definition",
+      "acquise": true,
+      "cloturee": true,
+      "decision": {
+        "action": "approfondir",
+        "acquise": true,
+        "raison": "Réponse correcte enregistrée par le serveur."
+      }
+    },
+    "3471d02a820b4af390cf251d6cd69205": {
+      "id": "3471d02a820b4af390cf251d6cd69205",
+      "exercice_id": "cours-33091869f29f4392b73a2cfdd973eff5",
+      "enonce": "Énoncez le théorème qui affirme qu'une série absolument convergente est convergente.",
+      "session": "c613b481fa954a0186a03426e1c8a41b",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "cours",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 0,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "non_determinable",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [],
+      "evaluations": [],
+      "source": "16.2.4",
+      "page_source": {
+        "fichier": "data/cours/analyse.pdf",
+        "pdf": [
+          143
+        ],
+        "imprimee": [
+          141
+        ]
+      },
+      "nature": "theoreme"
+    },
+    "73f576c9b307411c81890cb2d45e092b": {
+      "id": "73f576c9b307411c81890cb2d45e092b",
+      "exercice_id": "cours-48fca37b0bd7492b9f935cf3fd6b1740",
+      "enonce": "Donnez-moi la définition d'une série semi-convergente.",
+      "session": "428eb4ec11a04cd2afd468400ce17010",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "cours",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 0,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "non_determinable",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [],
+      "evaluations": [],
+      "source": "16.2.7",
+      "page_source": {
+        "fichier": "data/cours/analyse.pdf",
+        "pdf": [
+          144
+        ],
+        "imprimee": [
+          142
+        ]
+      },
+      "nature": "definition"
+    }
+  }
+}

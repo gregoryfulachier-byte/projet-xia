@@ -1,0 +1,16 @@
+[
+  {
+    "route": "/inscription",
+    "action": null,
+    "message": null,
+    "statut": 200,
+    "dialogue": []
+  },
+  {
+    "route": "/",
+    "action": "chapitre",
+    "message": null,
+    "statut": 502,
+    "dialogue": []
+  }
+]

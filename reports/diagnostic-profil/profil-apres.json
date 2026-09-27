@@ -1,0 +1,126 @@
+{
+  "nom": "eleve",
+  "niveaux": {},
+  "exercices_vus": [],
+  "historique": [],
+  "taches": {
+    "c194840db6b4431991cf5156ac2efc9d": {
+      "id": "c194840db6b4431991cf5156ac2efc9d",
+      "exercice_id": "cours-0669148dba51487f88ad4c94eb7d33a3",
+      "enonce": "Définissez une série convergente.",
+      "session": "14e548f65a2f4e229e5fcb222832d74a",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "cours",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 1,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "aucune",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [
+        "Ses sommes partielles ont une limite finie."
+      ],
+      "evaluations": [
+        {
+          "reponse": "Ses sommes partielles ont une limite finie.",
+          "verdict": "correcte",
+          "type_erreur": "aucune",
+          "explication": "Réponse correcte (évaluateur simulé)."
+        }
+      ],
+      "source": "diagnostic-definition",
+      "page_source": {
+        "pdf": [
+          1
+        ]
+      },
+      "nature": "definition",
+      "decision": {
+        "action": "approfondir",
+        "acquise": false,
+        "raison": "Vérifier une définition et un énoncé de théorème avant la démonstration."
+      },
+      "cloturee": true
+    },
+    "6f0c0e620fe445b0bce7b56e447b9c3c": {
+      "id": "6f0c0e620fe445b0bce7b56e447b9c3c",
+      "exercice_id": "cours-c7c2461267fb4e289ae292f6428a46c3",
+      "enonce": "Que peut-on conclure de la convergence absolue ?",
+      "session": "14e548f65a2f4e229e5fcb222832d74a",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "cours",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 1,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "aucune",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [
+        "Je cherche encore.",
+        "Je cherche encore.",
+        "Je cherche encore.",
+        "Je cherche encore.",
+        "Je cherche encore.",
+        "Je cherche encore.",
+        "Je cherche encore.",
+        "La convergence absolue implique la convergence."
+      ],
+      "evaluations": [
+        {
+          "reponse": "Je cherche encore.\nJe cherche encore.\nJe cherche encore.\nJe cherche encore.\nJe cherche encore.\nJe cherche encore.\nJe cherche encore.\nLa convergence absolue implique la convergence.",
+          "verdict": "correcte",
+          "type_erreur": "aucune",
+          "explication": "Réponse correcte (évaluateur simulé)."
+        }
+      ],
+      "source": "diagnostic-theoreme",
+      "page_source": {
+        "pdf": [
+          1
+        ]
+      },
+      "nature": "theoreme",
+      "decision": {
+        "action": "avancer",
+        "acquise": true,
+        "raison": "Acquisition (décideur simulé)."
+      },
+      "cloturee": true
+    },
+    "35b74af4320d4473b68dcaccd44f9201": {
+      "id": "35b74af4320d4473b68dcaccd44f9201",
+      "exercice_id": "cours-4cdbcc1a37004a89a119ec375c999753",
+      "enonce": "Démontrez cette implication avec le critère de Cauchy.",
+      "session": "14e548f65a2f4e229e5fcb222832d74a",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "demonstration",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 0,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "non_determinable",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [],
+      "evaluations": [],
+      "source": "diagnostic-theoreme",
+      "page_source": {
+        "pdf": [
+          1
+        ]
+      },
+      "nature": "demonstration"
+    }
+  }
+}

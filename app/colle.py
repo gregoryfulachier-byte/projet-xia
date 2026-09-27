@@ -1,5 +1,6 @@
 """État de la colle et transitions gardées côté serveur."""
 import json
+import re
 from pathlib import Path
 from uuid import uuid4
 
@@ -42,9 +43,21 @@ class Colle:
         profil = Profil.charger(self.chemin_profil)
         return [{k: t.get(k) for k in ("etape", "nature", "source", "enonce")}
                 for t in profil.taches.values()
-                if t.get("session") == self.session_colle and t.get("chapitre") == self.chapitre
-                and t.get("cloturee") and t.get("evaluations")
+                if t.get("chapitre") == self.chapitre
+                and (t.get("acquise") or t.get("cloturee")) and t.get("evaluations")
                 and t["evaluations"][-1]["verdict"] == "correcte"]
+
+    def reprendre_progression(self):
+        """Reconstituer l'étape depuis les acquis durables du chapitre."""
+        acquis = self.taches_validees()
+        natures = {t["nature"] for t in acquis if t["etape"] == "cours"}
+        self.etape = "cours"
+        if {"definition", "theoreme"} <= natures:
+            self.etape = "demonstration"
+            if any(t["etape"] == "demonstration" for t in acquis):
+                self.etape = "applications"
+                if any(t["etape"] == "applications" for t in acquis):
+                    self.etape = "exercices"
 
     def sauver_tache(self):
         profil = Profil.charger(self.chemin_profil)
@@ -76,10 +89,19 @@ class Colle:
         if chapitre not in self.chapitres or (self.chapitre and chapitre != self.chapitre):
             raise ValueError("Conserver le chapitre de cette colle.")
         passage = self.sources.get(source)
+        if passage is None:
+            # Accepter une citation complète, mais conserver l'identifiant
+            # canonique pour que changer le libellé ne contourne pas les acquis.
+            references = [identifiant for identifiant in self.sources
+                          if re.search(r"(?<![\w.])" + re.escape(identifiant) + r"(?![\w.])", source)]
+            if len(references) == 1:
+                source = references[0]
+                passage = self.sources[source]
         if not passage or chapitre_catalogue(passage["chapitre"]) != chapitre:
             raise ValueError("Rechercher d'abord une source de ce chapitre dans le cours indexé.")
         if nature not in ({"definition", "theoreme"} if self.etape == "cours" else {self.etape}):
-            raise ValueError("Nature de tâche incompatible avec l'étape.")
+            raise ValueError("Nature de tâche incompatible avec l'étape " + self.etape
+                             + ". Utiliser definition ou theoreme au cours, sinon " + self.etape + ".")
         types = {"definition": {"définition"}, "theoreme": {"théorème", "proposition", "lemme", "corollaire"},
                  "applications": {"exemple"}}
         if nature in types and passage.get("type") not in types[nature]:
@@ -88,11 +110,10 @@ class Colle:
             raise ValueError("Choisir un passage contenant une preuve du cours.")
         if not enonce.strip():
             raise ValueError("La question doit être non vide.")
-        retour_au_cours = self.tache and self.tache.get("decision", {}).get("action") == "revenir_au_cours"
-        if not retour_au_cours and any(
+        if any(
                 t["etape"] == self.etape and t["nature"] == nature and t["source"] == source
                 for t in self.taches_validees()):
-            raise ValueError("Cette tâche est déjà validée dans cette colle. Choisir une autre tâche à l'étape autorisée.")
+            raise ValueError("Cette tâche est déjà validée dans le profil. Choisir une autre tâche à l'étape autorisée.")
         self.chapitre = chapitre
         self.exercice = {"id": "cours-" + uuid4().hex, "chapitre": chapitre,
                          "enonce": enonce, "corrige": passage["texte"]}
@@ -124,12 +145,19 @@ class Colle:
         if reformulation == "oui" and t["erreur_a_reformuler"]:
             t["erreur_a_reformuler"] = False
             t["erreur_reformulee"] = True
-        t["echanges"].append(self.message_courant)
+        self.enregistrer_message()
         self.tour_observe = self.tour_colle
         self.sauver_tache()
         if correction == "oui" or fini == "oui" or reformulation == "oui" or t["blocages"] >= 2 or (indice_donne == "oui" and t["indices_donnes"] >= 3):
             return await self.evaluer_tache()
         return self.etat_colle()
+
+    def enregistrer_message(self):
+        # L'évaluation serveur et l'observation partagent le même message réel.
+        if getattr(self, "tour_enregistre", None) != (self.tache["id"], self.tour_colle):
+            self.tache["echanges"].append(self.message_courant)
+            self.tour_enregistre = (self.tache["id"], self.tour_colle)
+            self.sauver_tache()
 
     async def evaluer_tache(self):
         if not self.tache:
@@ -149,6 +177,22 @@ class Colle:
                 t["erreur_a_reformuler"] = True
                 t["erreur_reformulee"] = False
             self.sauver_tache()
+        if t["etape"] != "exercices" and evaluation["verdict"] == "correcte":
+            # Une réponse correcte est un acquis, sans décision supplémentaire
+            # du tuteur ou du modèle de progression, même si ce dernier tombe.
+            t.update(acquise=True, cloturee=True, erreur_a_reformuler=False)
+            t["decision"] = {"action": "approfondir", "acquise": True,
+                             "raison": "Réponse correcte enregistrée par le serveur."}
+            self.sauver_tache()
+            if t["etape"] == "cours":
+                self.reprendre_progression()
+            else:
+                self.etape = ETAPES[ETAPES.index(t["etape"]) + 1]
+            if self.etape != t["etape"]:
+                t["decision"]["action"] = "avancer"
+            self.nouvelle_tache_autorisee = True
+            self.sauver_tache()
+            return {"evaluation": evaluation, "decision": t["decision"], "etat": self.etat_colle()}
         profil = Profil.charger(self.chemin_profil)
         performance = {k: t[k] for k in ("etape", "indices_demandes", "indices_donnes", "tentatives",
                        "rappels_cours", "intuition_initiale", "type_erreur", "notions", "erreur_reformulee")}
@@ -167,7 +211,7 @@ class Colle:
             decision = {**decision, "action": "approfondir", "acquise": False}
         if decision["action"] == "avancer" and self.etape == "cours":
             acquis = {v.get("nature") for v in profil.taches.values()
-                      if v.get("session") == self.session_colle and v["etape"] == "cours"
+                      if v.get("chapitre") == self.chapitre and v["etape"] == "cours"
                       and v["evaluations"] and v["evaluations"][-1]["verdict"] == "correcte"}
             if not {"definition", "theoreme"} <= acquis:
                 decision = {**decision, "action": "approfondir", "acquise": False,

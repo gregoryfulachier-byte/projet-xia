@@ -1,0 +1,102 @@
+{
+  "nom": "verification-profil",
+  "niveaux": {},
+  "exercices_vus": [],
+  "historique": [],
+  "taches": {
+    "7d0ccd5411a6423eacc955b4973bba1e": {
+      "id": "7d0ccd5411a6423eacc955b4973bba1e",
+      "exercice_id": "cours-49af2b618db84d3cb3391c434cefe6c2",
+      "enonce": "Donnez-moi la définition d'une série convergente.",
+      "session": "fa0dfa1aefd24c788c020561f9979086",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "cours",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 0,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "aucune",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [
+        "Une serie de terme general u_n converge si la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n converge vers une limite finie S. Cette limite est la somme de la serie."
+      ],
+      "evaluations": [
+        {
+          "reponse": "Une serie de terme general u_n converge si la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n converge vers une limite finie S. Cette limite est la somme de la serie.",
+          "verdict": "correcte",
+          "type_erreur": "aucune",
+          "explication": "La définition donnée est correcte : la série converge exactement lorsque la suite de ses sommes partielles admet une limite finie, qui est appelée somme de la série."
+        }
+      ],
+      "source": "16.1.5",
+      "page_source": {
+        "fichier": "data/cours/analyse.pdf",
+        "pdf": [
+          140
+        ],
+        "imprimee": [
+          138
+        ]
+      },
+      "nature": "definition",
+      "acquise": true,
+      "cloturee": true,
+      "decision": {
+        "action": "approfondir",
+        "acquise": true,
+        "raison": "Réponse correcte enregistrée par le serveur."
+      }
+    },
+    "e0ae83a7e17d48369b14bf549d8ed3a5": {
+      "id": "e0ae83a7e17d48369b14bf549d8ed3a5",
+      "exercice_id": "cours-533fdb73ab2446748a2cfb29efd61878",
+      "enonce": "Énoncez et démontrez le théorème qui établit que toute série absolument convergente est convergente.",
+      "session": "fa0dfa1aefd24c788c020561f9979086",
+      "chapitre": "17 — Série de réels ou de complexes",
+      "etape": "cours",
+      "indices_demandes": 0,
+      "indices_donnes": 0,
+      "tentatives": 0,
+      "rappels_cours": 0,
+      "intuition_initiale": "non_observee",
+      "type_erreur": "aucune",
+      "notions": [],
+      "erreur_a_reformuler": false,
+      "erreur_reformulee": false,
+      "blocages": 0,
+      "echanges": [
+        "Toute serie reelle ou complexe absolument convergente est convergente. Si la serie des modules de u_n converge, ses sommes partielles verifient le critere de Cauchy. Pour tout epsilon > 0, au-dela d'un rang N et pour q > p >= N, la somme des modules de u_k de p+1 a q est inferieure a epsilon. Par l'inegalite triangulaire, le module de la somme de u_k de p+1 a q est au plus cette somme des modules. Les sommes partielles de la serie de u_n forment donc une suite de Cauchy dans R ou C, espaces complets, donc elles convergent."
+      ],
+      "evaluations": [
+        {
+          "reponse": "Toute serie reelle ou complexe absolument convergente est convergente. Si la serie des modules de u_n converge, ses sommes partielles verifient le critere de Cauchy. Pour tout epsilon > 0, au-dela d'un rang N et pour q > p >= N, la somme des modules de u_k de p+1 a q est inferieure a epsilon. Par l'inegalite triangulaire, le module de la somme de u_k de p+1 a q est au plus cette somme des modules. Les sommes partielles de la serie de u_n forment donc une suite de Cauchy dans R ou C, espaces complets, donc elles convergent.",
+          "verdict": "correcte",
+          "type_erreur": "aucune",
+          "explication": "La démonstration est correcte : la convergence de la série des modules fournit le contrôle des queues, et l'inégalité triangulaire montre que les sommes partielles de la série initiale sont de Cauchy. La complétude de R ou C permet alors de conclure à leur convergence."
+        }
+      ],
+      "source": "16.2.4",
+      "page_source": {
+        "fichier": "data/cours/analyse.pdf",
+        "pdf": [
+          143
+        ],
+        "imprimee": [
+          141
+        ]
+      },
+      "nature": "theoreme",
+      "acquise": true,
+      "cloturee": true,
+      "decision": {
+        "action": "avancer",
+        "acquise": true,
+        "raison": "Réponse correcte enregistrée par le serveur."
+      }
+    }
+  }
+}

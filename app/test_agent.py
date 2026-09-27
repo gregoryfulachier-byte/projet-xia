@@ -38,8 +38,23 @@ class AgentTests(unittest.IsolatedAsyncioTestCase):
         self.addCleanup(verification.stop)
         self.verifier.side_effect = lambda enonce, corrige, client: enonce
         self.agent = Agent(self.chemin, [self.exercice])
+        self.agent.selectionner_chapitre(CHAPITRE_SERIES)
         self.agent.etape = "exercices"
         self.client = SimpleNamespace(responses=SimpleNamespace(create=AsyncMock()))
+
+    async def test_message_libre_ne_selectionne_pas_de_chapitre(self):
+        agent = Agent(self.chemin, [self.exercice])
+        for message in (CHAPITRE_SERIES, "Series numeriques", "Je veux travailler les séries"):
+            with self.assertRaises(ValueError):
+                await agent.repondre(message, self.client)
+        self.client.responses.create.assert_not_awaited()
+        self.assertIsNone(agent.chapitre)
+        with self.assertRaises(ValueError):
+            agent.selectionner_chapitre("Series numeriques")
+        agent.selectionner_chapitre(CHAPITRE_SERIES)
+        self.assertEqual(agent.chapitre, CHAPITRE_SERIES)
+        with self.assertRaises(ValueError):
+            agent.selectionner_chapitre(CHAPITRE_SERIES)
 
     async def test_catalogue_agent_limite_aux_series(self):
         catalogue = charger_exercices()

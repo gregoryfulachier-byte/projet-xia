@@ -1,0 +1,102 @@
+{
+  "simulation": true,
+  "echanges": 10,
+  "taches": 3,
+  "evaluations": 2,
+  "acquis_nouvelle_session": [
+    {
+      "etape": "cours",
+      "nature": "definition",
+      "source": "diagnostic-definition",
+      "enonce": "Définissez une série convergente."
+    },
+    {
+      "etape": "cours",
+      "nature": "theoreme",
+      "source": "diagnostic-theoreme",
+      "enonce": "Que peut-on conclure de la convergence absolue ?"
+    }
+  ],
+  "dialogue": [
+    {
+      "role": "user",
+      "content": "Series numeriques"
+    },
+    {
+      "role": "assistant",
+      "content": "Définissez une série convergente."
+    },
+    {
+      "role": "user",
+      "content": "Ses sommes partielles ont une limite finie."
+    },
+    {
+      "role": "assistant",
+      "content": "Réponse correcte.\n\nQue peut-on conclure de la convergence absolue ?"
+    },
+    {
+      "role": "user",
+      "content": "Je cherche encore."
+    },
+    {
+      "role": "assistant",
+      "content": "Prenez le temps de formuler votre réponse."
+    },
+    {
+      "role": "user",
+      "content": "Je cherche encore."
+    },
+    {
+      "role": "assistant",
+      "content": "Prenez le temps de formuler votre réponse."
+    },
+    {
+      "role": "user",
+      "content": "Je cherche encore."
+    },
+    {
+      "role": "assistant",
+      "content": "Prenez le temps de formuler votre réponse."
+    },
+    {
+      "role": "user",
+      "content": "Je cherche encore."
+    },
+    {
+      "role": "assistant",
+      "content": "Prenez le temps de formuler votre réponse."
+    },
+    {
+      "role": "user",
+      "content": "Je cherche encore."
+    },
+    {
+      "role": "assistant",
+      "content": "Prenez le temps de formuler votre réponse."
+    },
+    {
+      "role": "user",
+      "content": "Je cherche encore."
+    },
+    {
+      "role": "assistant",
+      "content": "Prenez le temps de formuler votre réponse."
+    },
+    {
+      "role": "user",
+      "content": "Je cherche encore."
+    },
+    {
+      "role": "assistant",
+      "content": "Prenez le temps de formuler votre réponse."
+    },
+    {
+      "role": "user",
+      "content": "La convergence absolue implique la convergence."
+    },
+    {
+      "role": "assistant",
+      "content": "Réponse correcte.\n\nDémontrez cette implication avec le critère de Cauchy."
+    }
+  ]
+}

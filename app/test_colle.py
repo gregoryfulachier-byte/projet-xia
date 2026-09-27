@@ -71,7 +71,7 @@ class ColleTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(Profil.charger(self.path).taches), 5)
         self.assertEqual(Profil.charger(self.path).exercices_vus, [])
 
-    async def test_erreur_impose_reformulation_avant_toute_transition(self):
+    async def test_reponse_corrigee_acquise_sans_decision_supplementaire(self):
         self.agent.etape = "applications"
         self.preparer("applications")
         self.eval.return_value = {**self.verdict, "verdict": "incorrecte", "type_erreur": "hypothese_ou_domaine"}
@@ -80,36 +80,34 @@ class ColleTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(self.agent.nouvelle_tache_autorisee)
         self.eval.return_value = self.verdict
         await self.observer("Je veux avancer", fini="oui")
-        self.assertEqual(self.agent.etape, "applications")
-        await self.observer("J'avais oublié la convergence, qui est requise.", reformulation="oui", tentative="oui")
         self.assertEqual(self.agent.etape, "exercices")
-        self.assertTrue(self.agent.tache["erreur_reformulee"])
+        self.assertTrue(self.agent.tache["acquise"])
+        self.assertFalse(self.agent.tache["erreur_a_reformuler"])
 
     async def test_demande_exercice_ne_reouvre_pas_une_question_validee(self):
         self.preparer()
-        await self.observer(tentative="oui", fini="oui")
-        self.suite.return_value = {**self.decision, "action": "approfondir"}
-        self.preparer("theoreme")
         await self.observer(tentative="oui", fini="oui")
         derniere_tache = self.agent.tache
         client = SimpleNamespace(responses=SimpleNamespace(create=AsyncMock(side_effect=[
             sortie(appels=[appel("preparer_tache", chapitre="Series numeriques",
                                 enonce="Définissez une série convergente.", source="def", nature="definition")]),
-            sortie("Poursuivons avec une autre question du cours.")])))
+            sortie(appels=[appel("preparer_tache", chapitre="Series numeriques",
+                                enonce="Énoncez le théorème.", source="th", nature="theoreme")]),
+            sortie("Énoncez le théorème.")])))
 
         await self.agent.repondre("Donne-moi un exercice", client)
 
         etat = json.loads(client.responses.create.call_args_list[0].kwargs["instructions"].split("État de la colle : ")[1])
-        self.assertEqual([t["source"] for t in etat["taches_validees"]], ["def", "th"])
-        retour = json.loads(client.responses.create.call_args.kwargs["input"][-2]["output"])
+        self.assertEqual([t["source"] for t in etat["taches_validees"]], ["def"])
+        retour = json.loads(next(v["output"] for v in self.agent.historique if v.get("type") == "function_call_output"))
         self.assertIn("déjà validée", retour["erreur"])
-        self.assertIs(self.agent.tache, derniere_tache)
-        self.assertTrue(self.agent.nouvelle_tache_autorisee)
+        self.assertIsNot(self.agent.tache, derniere_tache)
+        self.assertFalse(self.agent.nouvelle_tache_autorisee)
         self.assertEqual(len(Profil.charger(self.path).taches), 2)
         with self.assertRaises(ValueError):
             await self.agent.proposer_exercice("Series numeriques")
 
-    async def test_acquis_ne_bloquent_pas_preuve_retour_explicite_ou_nouvelle_colle(self):
+    async def test_acquis_persistants_et_preuve_distincte_du_theoreme(self):
         self.preparer()
         await self.observer(tentative="oui", fini="oui")
         self.preparer("theoreme")
@@ -117,9 +115,17 @@ class ColleTests(unittest.IsolatedAsyncioTestCase):
         self.preparer("demonstration")  # Même source, autre nature.
         self.suite.return_value = {**self.decision, "action": "revenir_au_cours", "acquise": False}
         await self.observer(tentative="oui", fini="oui")
-        self.preparer()  # Retour expressément décidé par l'évaluateur.
+        self.assertEqual(self.agent.etape, "applications")
+        sources = self.agent.sources.copy()
         self.agent.initialiser_colle()
-        self.assertEqual(self.agent.etat_colle()["taches_validees"], [])
+        self.agent.sources = sources
+        self.agent.selectionner_chapitre(self.exercices[0]["chapitre"])
+        self.agent.reprendre_progression()
+        self.assertEqual(len(self.agent.taches_validees()), 3)
+        self.assertEqual(self.agent.etape, "applications")
+        self.agent.etape = "cours"
+        with self.assertRaisesRegex(ValueError, "déjà validée"):
+            self.preparer()
 
     async def test_demande_explicite_sans_tentative_declenche_correction(self):
         self.preparer()
@@ -181,9 +187,10 @@ class ColleTests(unittest.IsolatedAsyncioTestCase):
         self.suite.side_effect = RuntimeError("réseau")
         result = await self.observer(correction="oui")
         self.assertEqual(result["evaluation"], self.verdict)
-        self.assertIn("erreur", result)
+        self.suite.assert_not_awaited()
         self.assertEqual(self.agent.etape, "cours")
-        self.assertFalse(self.agent.nouvelle_tache_autorisee)
+        self.assertTrue(self.agent.nouvelle_tache_autorisee)
+        self.assertTrue(self.agent.tache["acquise"])
         self.assertEqual(len(Profil.charger(self.path).taches[self.agent.tache["id"]]["evaluations"]), 1)
 
     async def test_indeterminable_interdit_transition(self):
@@ -242,17 +249,17 @@ class ColleTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_dialogue_observation_forcee_et_verdict_automatique(self):
         self.preparer()
-        arguments = dict(tentative="oui", indice_demande="non", indice_donne="non", rappel_cours="non",
-                         intuition="pertinente", notions="convergence", blocage="non", fini="oui",
-                         correction="non", reformulation="non")
         client = SimpleNamespace(responses=SimpleNamespace(create=AsyncMock(side_effect=[
-            sortie(appels=[appel("observer_tour", **arguments)]), sortie("Justifié. Vérifions un théorème.")])))
+            sortie(appels=[appel("preparer_tache", chapitre="Series numeriques", enonce="Énoncez le théorème.",
+                                source="th", nature="theoreme")]), sortie("Énoncez le théorème.")])))
         await self.agent.repondre("Ma réponse complète", client)
-        self.assertEqual(client.responses.create.call_args_list[0].kwargs["tool_choice"]["name"], "observer_tour")
+        self.assertEqual(client.responses.create.call_args_list[0].kwargs["tool_choice"]["name"], "chercher_dans_cours")
         self.eval.assert_awaited_once()
         self.assertEqual(self.agent.messages[0]["content"], "Ma réponse complète")
-        self.assertEqual(self.suite.call_args.args[0]["tentatives"], 1)
-        self.assertIn("Ma réponse complète", self.suite.call_args.args[0]["historique"])
+        self.suite.assert_not_awaited()
+        premiere = next(iter(Profil.charger(self.path).taches.values()))
+        self.assertTrue(premiere["acquise"])
+        self.assertEqual(premiere["echanges"], ["Ma réponse complète"])
 
     async def test_contrat_pipelex_rejette_decision_malformee(self):
         performance = dict(etape="cours", indices_demandes=0, indices_donnes=0, tentatives=1,
@@ -265,6 +272,38 @@ class ColleTests(unittest.IsolatedAsyncioTestCase):
             with self.assertRaises(ValueError):
                 await decider_suite(performance)
             self.assertEqual(client.start_and_wait.call_args.kwargs["inputs"], {"performance": performance})
+
+    async def test_citation_complete_utilise_identifiant_canonique(self):
+        self.agent.sources["16.1.5"] = self.agent.sources["def"]
+        self.agent.preparer_tache(self.exercices[0]["chapitre"], "Définir la convergence",
+                                 "Définition 16.1.5, page PDF 140", "definition")
+        await self.observer(fini="oui")
+        self.assertEqual(self.agent.tache["source"], "16.1.5")
+        with self.assertRaisesRegex(ValueError, "déjà validée"):
+            self.agent.preparer_tache(self.exercices[0]["chapitre"], "Une autre formulation",
+                                     "16.1.5", "definition")
+
+    async def test_echec_evaluation_interdit_verdict_du_tuteur(self):
+        self.preparer()
+        self.eval.side_effect = RuntimeError("Service indisponible")
+        client = SimpleNamespace(responses=SimpleNamespace(create=AsyncMock(return_value=sortie("Correct !"))))
+        with self.assertRaises(RuntimeError):
+            await self.agent.repondre("Ma réponse", client)
+        client.responses.create.assert_not_awaited()
+        tache = next(iter(Profil.charger(self.path).taches.values()))
+        self.assertEqual(tache["evaluations"], [])
+        self.assertFalse(tache.get("acquise", False))
+
+    async def test_enregistrement_impose_avant_premiere_question(self):
+        self.agent.selectionner_chapitre(self.exercices[0]["chapitre"])
+        client = SimpleNamespace(responses=SimpleNamespace(create=AsyncMock(side_effect=[
+            sortie("Question non enregistrée"),
+            sortie(appels=[appel("preparer_tache", chapitre="Series numeriques", enonce="Question enregistrée",
+                                source="def", nature="definition")]), sortie("Question différente inventée par le tuteur")])))
+        resultat = await self.agent.repondre("Chapitre sélectionné", client)
+        self.assertEqual(resultat, "Question enregistrée")
+        self.assertEqual(len(Profil.charger(self.path).taches), 1)
+        self.assertNotIn("Question non enregistrée", str(self.agent.messages))
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
 from app.web import create_app
+from app.chapitres import CHAPITRE_SERIES
 from app.profil import Profil
 
 
@@ -17,7 +18,9 @@ class ChatTests(unittest.TestCase):
         self.addCleanup(repertoire.cleanup)
         root = Path(repertoire.name)
         exercices = root / "exercices.json"
-        exercices.write_text(json.dumps([]), encoding="utf-8")
+        exercices.write_text(json.dumps([
+            {"id": "17.1", "chapitre": CHAPITRE_SERIES, "enonce": "Question", "difficulte": 1}
+        ]), encoding="utf-8")
         self.app = create_app({"TESTING": True, "SECRET_KEY": "test",
                                "PROFILS_DIR": root / "profils", "UTILISATEURS_PATH": root / "utilisateurs.json", "EXERCICES_PATH": exercices})
         self.client = self.app.test_client()
@@ -43,7 +46,9 @@ class ChatTests(unittest.TestCase):
         ]), encoding="utf-8")
         self.envoyer(action="nouvelle")
         page = self.client.get("/").get_data(as_text=True)
-        self.assertIn("Chapitres disponibles : Series numeriques.", page)
+        self.assertIn("Choisissez votre chapitre", page)
+        self.assertIn('name="chapitre" value="0">Series numeriques</button>', page)
+        self.assertNotIn('name="message"', page)
         self.assertNotIn(chapitre, page)
         self.assertNotIn("16 —", page)
 
@@ -53,18 +58,24 @@ class ChatTests(unittest.TestCase):
             self.assertEqual(self.envoyer(**valeurs).status_code, 400)
         self.assertEqual(self.envoyer(tour="ancien").status_code, 409)
         with patch.dict(os.environ, {"OPENAI_API_KEY": ""}):
-            self.assertEqual(self.envoyer().status_code, 503)
+            self.assertEqual(self.envoyer(action="chapitre", chapitre="0").status_code, 503)
+        for valeurs in ({"message": "Series numeriques"},
+                        {"action": "chapitre", "chapitre": "Series numeriques"},
+                        {"action": "chapitre", "chapitre": "99"}):
+            self.assertEqual(self.envoyer(**valeurs).status_code, 400)
         repondre.assert_not_called()
 
     @patch.dict(os.environ, {"OPENAI_API_KEY": "test"})
     @patch("app.agent.Agent.repondre", autospec=True)
     def test_dialogue_isole_echappement_et_nouvelle_discussion(self, repondre):
         async def parler(agent, message):
+            self.assertEqual(agent.chapitre, CHAPITRE_SERIES)
             agent.messages.extend([{"role": "user", "content": message},
                                    {"role": "assistant", "content": "<script>secret</script>"}])
         repondre.side_effect = parler
         ancien_cookie = self.client.get_cookie("session").value
-        self.assertEqual(self.envoyer().status_code, 302)
+        self.assertEqual(self.envoyer(action="chapitre", chapitre="0", message="Un autre chapitre").status_code, 302)
+        self.assertEqual(repondre.call_args.args[1], "Chapitre sélectionné : Series numeriques")
         page = self.client.get("/")
         self.assertIn(b"&lt;script&gt;secret", page.data)
         self.assertNotIn(b"<script>secret", page.data)
@@ -83,6 +94,9 @@ class ChatTests(unittest.TestCase):
     @patch.dict(os.environ, {"OPENAI_API_KEY": "test"})
     @patch("app.agent.Agent.repondre", autospec=True)
     def test_echec_conserve_brouillon(self, repondre):
+        self.assertEqual(self.envoyer(action="chapitre", chapitre="0").status_code, 302)
+        with self.client.session_transaction() as session:
+            self.tokens["tour"] = session["tour"]
         repondre.side_effect = RuntimeError("réseau")
         with self.assertLogs(self.app.logger, level="ERROR"):
             page = self.envoyer(message="Mon raisonnement")

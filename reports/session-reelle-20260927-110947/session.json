@@ -1,0 +1,55 @@
+[
+  {
+    "route": "/inscription",
+    "action": null,
+    "message": null,
+    "statut": 200,
+    "dialogue": []
+  },
+  {
+    "route": "/",
+    "action": "chapitre",
+    "message": null,
+    "statut": 200,
+    "dialogue": [
+      "Chapitre sélectionné : Series numeriques",
+      "Donnez-moi la définition d'une série convergente."
+    ]
+  },
+  {
+    "route": "/",
+    "action": null,
+    "message": "Une serie de terme general u_n converge si la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n admet une limite finie S. Cette limite S est la somme de la serie.",
+    "statut": 200,
+    "dialogue": [
+      "Chapitre sélectionné : Series numeriques",
+      "Donnez-moi la définition d'une série convergente.",
+      "Une serie de terme general u_n converge si la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n admet une limite finie S. Cette limite S est la somme de la serie.",
+      "Réponse correcte. Énoncez le théorème qui affirme qu'une série absolument convergente est convergente."
+    ]
+  },
+  {
+    "route": "/deconnexion",
+    "action": null,
+    "message": null,
+    "statut": 200,
+    "dialogue": []
+  },
+  {
+    "route": "/connexion",
+    "action": null,
+    "message": null,
+    "statut": 200,
+    "dialogue": []
+  },
+  {
+    "route": "/",
+    "action": "chapitre",
+    "message": null,
+    "statut": 200,
+    "dialogue": [
+      "Chapitre sélectionné : Series numeriques",
+      "Donnez-moi la définition d'une série semi-convergente."
+    ]
+  }
+]

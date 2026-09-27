@@ -1,0 +1,43 @@
+[
+  {
+    "route": "/inscription",
+    "action": null,
+    "message": null,
+    "statut": 200,
+    "dialogue": []
+  },
+  {
+    "route": "/",
+    "action": "chapitre",
+    "message": null,
+    "statut": 200,
+    "dialogue": [
+      "Chapitre sélectionné : Series numeriques",
+      "Donnez-moi la définition d'une série convergente."
+    ]
+  },
+  {
+    "route": "/",
+    "action": null,
+    "message": "Une serie de terme general u_n converge si la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n converge vers une limite finie S. Cette limite est la somme de la serie.",
+    "statut": 200,
+    "dialogue": [
+      "Chapitre sélectionné : Series numeriques",
+      "Donnez-moi la définition d'une série convergente.",
+      "Une serie de terme general u_n converge si la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n converge vers une limite finie S. Cette limite est la somme de la serie.",
+      "Réponse correcte. Énoncez et démontrez le théorème qui établit que toute série absolument convergente est convergente."
+    ]
+  },
+  {
+    "route": "/",
+    "action": null,
+    "message": "Toute serie reelle ou complexe absolument convergente est convergente. Si la serie des modules de u_n converge, ses sommes partielles verifient le critere de Cauchy. Pour tout epsilon > 0, au-dela d'un rang N et pour q > p >= N, la somme des modules de u_k de p+1 a q est inferieure a epsilon. Par l'inegalite triangulaire, le module de la somme de u_k de p+1 a q est au plus cette somme des modules. Les sommes partielles de la serie de u_n forment donc une suite de Cauchy dans R ou C, espaces complets, donc elles convergent.",
+    "statut": 502,
+    "dialogue": [
+      "Chapitre sélectionné : Series numeriques",
+      "Donnez-moi la définition d'une série convergente.",
+      "Une serie de terme general u_n converge si la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n converge vers une limite finie S. Cette limite est la somme de la serie.",
+      "Réponse correcte. Énoncez et démontrez le théorème qui établit que toute série absolument convergente est convergente."
+    ]
+  }
+]

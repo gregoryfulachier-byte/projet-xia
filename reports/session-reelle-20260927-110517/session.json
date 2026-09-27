@@ -1,0 +1,31 @@
+[
+  {
+    "route": "/inscription",
+    "action": null,
+    "message": null,
+    "statut": 200,
+    "dialogue": []
+  },
+  {
+    "route": "/",
+    "action": "chapitre",
+    "message": null,
+    "statut": 200,
+    "dialogue": [
+      "Chapitre sélectionné : Series numeriques",
+      "Commençons par le cours. Donnez-moi la définition d'une série convergente."
+    ]
+  },
+  {
+    "route": "/",
+    "action": null,
+    "message": "Une serie de terme general u_n converge lorsque la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n admet une limite finie S. Cette limite S est la somme de la serie.",
+    "statut": 200,
+    "dialogue": [
+      "Chapitre sélectionné : Series numeriques",
+      "Commençons par le cours. Donnez-moi la définition d'une série convergente.",
+      "Une serie de terme general u_n converge lorsque la suite de ses sommes partielles S_n = somme de u_k pour k de 0 a n admet une limite finie S. Cette limite S est la somme de la serie.",
+      "Votre définition est correcte. Une série est absolument convergente si la série formée des modules de ses termes converge.\n\nPoursuivons. Donnez-moi maintenant la définition d'une série semi-convergente."
+    ]
+  }
+]

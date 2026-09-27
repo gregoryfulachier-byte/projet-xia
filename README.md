@@ -82,7 +82,15 @@ L’agent pilote les étapes et refuse de passer à la suite tant que l’acquis
 n’est pas établie. Il questionne face au blocage, demande de justifier la méthode
 et exige la reformulation d’une erreur avant de poursuivre.
 
-La correction se déclenche quand le travail semble terminé, après deux tours de
+Pour les tâches de cours, démonstration et application, le serveur évalue chaque
+message avant la réponse du tuteur, sans attendre un signal du modèle. Une réponse
+correcte clôt la tâche et enregistre `acquise: true` dans le profil, indépendamment
+du modèle de progression. L'identifiant du passage et la nature de la tâche
+empêchent de la reposer, y compris après déconnexion ou redémarrage. Le serveur
+reconstitue l'étape depuis ces acquis et impose l'enregistrement de chaque
+nouvelle question avant son affichage.
+
+Pour les exercices du catalogue, la correction se déclenche quand le travail semble terminé, après deux tours de
 blocage, à partir du troisième indice donné, ou sur demande dans le dialogue
 (même sans tentative). Le bouton de correction a été supprimé du chat.
 Les demandes d’aide ne comptent pas comme tentatives ; un blocage durable peut
@@ -140,12 +148,15 @@ restent compatibles. Les tâches de cours ne sont pas ajoutées aux exercices vu
 `methods/progression_colle/main.mthds` reçoit ces signaux et l’historique du
 chapitre, puis décide `avancer`, `approfondir`, `revenir_au_cours` ou
 `changer_exercice`, avec un jugement d’acquisition et une justification.
-Le serveur refuse une avance sans réponse correcte et acquisition, exige au
-minimum une définition et un théorème réussis avant la démonstration, et bloque
-toute transition tant qu’une erreur reste à reformuler. Une réussite au catalogue
+Le serveur exige au minimum une définition et un théorème acquis dans le profil
+avant la démonstration. Pour le cours, une nouvelle réponse évaluée correcte
+valide directement l'acquisition. Pour le catalogue, il refuse une avance sans
+réponse correcte et acquisition, et bloque toute transition tant qu'une erreur
+reste à reformuler. Une réussite au catalogue
 cible une difficulté supérieure ; un changement pour blocage cible plus facile,
 avec repli sur le niveau disponible le plus proche.
 Si la décision Pipelex échoue, la correction reste disponible et l’étape est conservée.
+Cette décision n'est pas appelée pour valider une réponse de cours correcte.
 
 Les types Python générés sont dans `app/generated/progression_colle` (ne pas les
 modifier à la main). Après une modification de la méthode, les régénérer avec

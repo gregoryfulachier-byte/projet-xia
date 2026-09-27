@@ -74,6 +74,8 @@ def create_app(config=None):
             etat = conversations[identifiant]
             agent = etat["agent"]
             session["tour"] = etat["tour"]
+            choix = {str(i): chapitre for i, chapitre in enumerate(agent.chapitres)}
+            selection = request.form.get("action") == "chapitre"
             if request.method == "POST":
                 if not secrets.compare_digest(request.form.get("csrf", "").encode(), session["csrf"].encode()):
                     erreur, statut = "La session a expiré. Rechargez la page.", 400
@@ -83,9 +85,13 @@ def create_app(config=None):
                     conversations.pop(identifiant)
                     session["conversation"] = secrets.token_urlsafe(32)
                     return redirect(url_for("chat"))
-                elif request.form.get("action"):
+                elif selection and (agent.chapitre is not None or request.form.get("chapitre") not in choix):
+                    erreur, statut = "Choix de chapitre indisponible.", 400
+                elif request.form.get("action") and not selection:
                     erreur, statut = "Action indisponible. Écrivez votre demande dans le dialogue.", 400
-                elif not message.strip() or len(message) > 12000:
+                elif not selection and agent.chapitre is None:
+                    erreur, statut = "Choisissez votre chapitre avec un bouton.", 400
+                elif not selection and (not message.strip() or len(message) > 12000):
                     erreur, statut = "Écrivez un message de 1 à 12 000 caractères.", 400
                 elif len(agent.messages) >= 120:
                     erreur, statut = "Cette discussion est longue. Commencez une nouvelle discussion pour continuer.", 400
@@ -93,6 +99,9 @@ def create_app(config=None):
                     erreur, statut = "Le chat est indisponible : configurez OPENAI_API_KEY sur le serveur.", 503
                 else:
                     try:
+                        if selection:
+                            agent.selectionner_chapitre(choix[request.form["chapitre"]])
+                            message = "Chapitre sélectionné : " + nom_chapitre(agent.chapitre)
                         asyncio.run(agent.repondre(message))
                     except Exception:
                         app.logger.exception("Échec du dialogue avec le tuteur")
@@ -102,6 +111,7 @@ def create_app(config=None):
                         session["tour"] = etat["tour"]
                         return redirect(url_for("chat"))
             return render_template("chat.html", messages=agent.messages, chapitres=list(map(nom_chapitre, agent.chapitres)),
+                                   chapitre_selectionne=agent.chapitre is not None,
                                    message=message, erreur=erreur, etape=agent.etape), statut
 
     @app.route("/classique", methods=["GET", "POST"])
