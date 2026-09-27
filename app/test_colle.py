@@ -1,4 +1,5 @@
 """Contrôle de la colle, avec évaluations et décisions simulées sans crédit."""
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -83,6 +84,42 @@ class ColleTests(unittest.IsolatedAsyncioTestCase):
         await self.observer("J'avais oublié la convergence, qui est requise.", reformulation="oui", tentative="oui")
         self.assertEqual(self.agent.etape, "exercices")
         self.assertTrue(self.agent.tache["erreur_reformulee"])
+
+    async def test_demande_exercice_ne_reouvre_pas_une_question_validee(self):
+        self.preparer()
+        await self.observer(tentative="oui", fini="oui")
+        self.suite.return_value = {**self.decision, "action": "approfondir"}
+        self.preparer("theoreme")
+        await self.observer(tentative="oui", fini="oui")
+        derniere_tache = self.agent.tache
+        client = SimpleNamespace(responses=SimpleNamespace(create=AsyncMock(side_effect=[
+            sortie(appels=[appel("preparer_tache", chapitre="Series numeriques",
+                                enonce="Définissez une série convergente.", source="def", nature="definition")]),
+            sortie("Poursuivons avec une autre question du cours.")])))
+
+        await self.agent.repondre("Donne-moi un exercice", client)
+
+        etat = json.loads(client.responses.create.call_args_list[0].kwargs["instructions"].split("État de la colle : ")[1])
+        self.assertEqual([t["source"] for t in etat["taches_validees"]], ["def", "th"])
+        retour = json.loads(client.responses.create.call_args.kwargs["input"][-2]["output"])
+        self.assertIn("déjà validée", retour["erreur"])
+        self.assertIs(self.agent.tache, derniere_tache)
+        self.assertTrue(self.agent.nouvelle_tache_autorisee)
+        self.assertEqual(len(Profil.charger(self.path).taches), 2)
+        with self.assertRaises(ValueError):
+            await self.agent.proposer_exercice("Series numeriques")
+
+    async def test_acquis_ne_bloquent_pas_preuve_retour_explicite_ou_nouvelle_colle(self):
+        self.preparer()
+        await self.observer(tentative="oui", fini="oui")
+        self.preparer("theoreme")
+        await self.observer(tentative="oui", fini="oui")
+        self.preparer("demonstration")  # Même source, autre nature.
+        self.suite.return_value = {**self.decision, "action": "revenir_au_cours", "acquise": False}
+        await self.observer(tentative="oui", fini="oui")
+        self.preparer()  # Retour expressément décidé par l'évaluateur.
+        self.agent.initialiser_colle()
+        self.assertEqual(self.agent.etat_colle()["taches_validees"], [])
 
     async def test_demande_explicite_sans_tentative_declenche_correction(self):
         self.preparer()

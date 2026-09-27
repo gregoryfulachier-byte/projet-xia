@@ -35,7 +35,16 @@ class Colle:
 
     def etat_colle(self):
         return donnees_publiques({"chapitre": self.chapitre, "etape": self.etape,
-                "tache": self.tache, "nouvelle_tache_autorisee": self.nouvelle_tache_autorisee})
+                "tache": self.tache, "nouvelle_tache_autorisee": self.nouvelle_tache_autorisee,
+                "taches_validees": self.taches_validees()})
+
+    def taches_validees(self):
+        profil = Profil.charger(self.chemin_profil)
+        return [{k: t.get(k) for k in ("etape", "nature", "source", "enonce")}
+                for t in profil.taches.values()
+                if t.get("session") == self.session_colle and t.get("chapitre") == self.chapitre
+                and t.get("cloturee") and t.get("evaluations")
+                and t["evaluations"][-1]["verdict"] == "correcte"]
 
     def sauver_tache(self):
         profil = Profil.charger(self.chemin_profil)
@@ -79,6 +88,11 @@ class Colle:
             raise ValueError("Choisir un passage contenant une preuve du cours.")
         if not enonce.strip():
             raise ValueError("La question doit être non vide.")
+        retour_au_cours = self.tache and self.tache.get("decision", {}).get("action") == "revenir_au_cours"
+        if not retour_au_cours and any(
+                t["etape"] == self.etape and t["nature"] == nature and t["source"] == source
+                for t in self.taches_validees()):
+            raise ValueError("Cette tâche est déjà validée dans cette colle. Choisir une autre tâche à l'étape autorisée.")
         self.chapitre = chapitre
         self.exercice = {"id": "cours-" + uuid4().hex, "chapitre": chapitre,
                          "enonce": enonce, "corrige": passage["texte"]}
