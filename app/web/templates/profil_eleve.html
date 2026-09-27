@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon profil · Tuteur</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body><main>
+  {% include "compte.html" %}
+  <header><h1>Mon profil</h1><p>Donnez au tuteur des repères pour votre prochaine question.</p></header>
+  {% if enregistre and not erreur %}<p class="profile-saved" role="status">Profil enregistré. Le tuteur en tiendra compte dès votre prochain message.</p>{% endif %}
+  {% if erreur %}<p class="error" role="alert">{{ erreur }}</p>{% endif %}
+  <form method="post" class="card auth-form">
+    <input type="hidden" name="csrf" value="{{ session.csrf }}">
+    {% include "champs_profil.html" %}
+    <button type="submit">Enregistrer mon profil</button>
+  </form>
+  <p><a href="{{ url_for('chat') }}">Revenir à ma khôlle</a></p>
+</main></body>
+</html>

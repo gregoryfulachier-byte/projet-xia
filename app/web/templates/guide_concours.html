@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide des concours · Tuteur</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body><main class="guide-page">
+  {% if session.get('utilisateur') %}{% include "compte.html" %}{% else %}{% include "navigation.html" %}{% endif %}
+  <header class="guide-intro">
+    <p class="muted">MP · MPI · PC · PSI — Référence : session 2026</p>
+    <h1>Comprendre les concours, préparer ses oraux</h1>
+    <p>Combien d’oraux de maths ? Quel poids dans le concours ? À quoi s’attendre en physique ? Retrouvez les formats, les coefficients et les priorités de travail dans un guide sourcé.</p>
+    <p><a class="button" href="{{ url_for('static', filename='guides/guide-concours-oraux-2026.pdf') }}" download>Télécharger le guide PDF</a></p>
+    <p class="muted">Notices 2026 vérifiées le 27 septembre 2026. Les formats décrits à partir des rapports 2025 sont signalés. Vérifiez les notices de votre session avant les épreuves.</p>
+  </header>
+  <div class="concours-list">
+    <section class="card"><h2>X et ENS</h2><p>Les oraux de maths et de physique, les options à Ulm, les différences entre ENS, et la place de l’autonomie dans la recherche.</p></section>
+    <section class="card"><h2>Centrale-Supélec</h2><p>Deux oraux de maths, dont maths-informatique. Préparer le tableau, Python, l’interprétation des résultats et les travaux pratiques.</p></section>
+    <section class="card"><h2>Mines-Ponts et CCINP</h2><p>Formats par filière, poids des épreuves et préparation du cours. Les banques d’exercices ne remplacent pas la compréhension des démonstrations.</p></section>
+    <section class="card"><h2>Les autres voies</h2><p>Mines-Télécom, e3a-Polytech et les écoles en banque : identifier les épreuves effectivement utilisées par chaque école.</p></section>
+  </div>
+  <section class="card"><h2>Transformer un objectif en entraînement</h2>
+    <p>Expliquez quels concours vous visez et vos difficultés dans votre profil. Le tuteur utilise ces repères dans le chapitre disponible, puis s’ajuste à vos réponses.</p>
+    <p><a href="{{ url_for('projet_eleve') if session.get('utilisateur') else url_for('auth.inscription') }}">{{ 'Compléter mon profil' if session.get('utilisateur') else 'Créer mon compte' }}</a> · <a href="{{ url_for('guide_kholle') }}">Les 10 réflexes pour réussir sa khôlle</a></p>
+    <p class="muted">Le guide couvre maths et physique ; le tuteur actuel travaille les séries numériques en maths.</p>
+  </section>
+</main></body>
+</html>

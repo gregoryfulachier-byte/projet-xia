@@ -1,0 +1,19 @@
+<fieldset class="projet-eleve">
+  <legend>Votre parcours et vos objectifs</legend>
+  <p class="muted">Facultatif et modifiable dans « Mon profil ». Ces informations sont transmises au tuteur IA pour orienter ses questions. Votre progression repose sur vos réponses, pas sur le nom de votre prépa.</p>
+  <label for="prepa">Votre lycée / prépa</label>
+  <input id="prepa" name="prepa" value="{{ projet.get('prepa', '') }}" maxlength="160" placeholder="Nom du lycée, ville">
+  <label for="filiere">Votre filière</label>
+  <select id="filiere" name="filiere">
+    <option value="">À préciser plus tard</option>
+    {% for filiere in filieres %}<option value="{{ filiere }}"{% if projet.get('filiere') == filiere %} selected{% endif %}>{{ filiere }}</option>{% endfor %}
+  </select>
+  <div class="rang-fields">
+    <div><label for="rang_maths">Rang actuel en maths</label>
+      <input id="rang_maths" name="rang_maths" type="number" min="1" max="1000" step="1" value="{{ projet.get('rang_maths', '') }}" placeholder="Ex. 12"></div>
+    <div><label for="effectif">Sur combien d’élèves ?</label>
+      <input id="effectif" name="effectif" type="number" min="1" max="1000" step="1" value="{{ projet.get('effectif', '') }}" placeholder="Ex. 40"></div>
+  </div>
+  <label for="objectifs">Quels concours visez-vous ? Que voulez-vous travailler ?</label>
+  <textarea id="objectifs" name="objectifs" rows="5" maxlength="2000" placeholder="Ex. Je vise Centrale et les Mines. Je connais mon cours, mais j’ai du mal à expliquer mes idées et à réagir aux relances.">{{ projet.get('objectifs', '') }}</textarea>
+</fieldset>

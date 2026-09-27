@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comment réussir sa khôlle · Tuteur</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="road-to-x-ens">
+<div class="guide-backdrop" aria-hidden="true">
+  <img class="guide-backdrop-x" src="{{ url_for('static', filename='branding/polytechnique.png') }}" alt="" width="690" height="1280">
+  <img class="guide-backdrop-ens" src="{{ url_for('static', filename='branding/ens-psl.png') }}" alt="" width="801" height="1142">
+</div>
+<main class="guide-page">
+  {% if session.get('utilisateur') %}
+    {% include "compte.html" %}
+  {% else %}
+    {% include "navigation.html" %}
+  {% endif %}
+  <header class="guide-intro">
+    <p class="eyebrow">LES RÉFLEXES DE L’ORAL · PRÉPA SCIENTIFIQUE</p>
+    <h1>Comment réussir sa khôlle ?</h1>
+    <p class="guide-lead">Faites comprendre votre idée, reliez-la au cours, puis ajustez votre raisonnement dans le dialogue.</p>
+    <p class="muted">Dix repères pour progresser en khôlle et aux oraux de concours. La précision scientifique reste essentielle.</p>
+    <div class="guide-actions">
+      <a class="button" href="{{ url_for('static', filename='guides/10-reflexes-oral-kholle.pdf') }}" download="10-reflexes-oral-kholle.pdf">Télécharger la fiche PDF</a>
+      <a href="{{ url_for('chat') }}">{{ 'Reprendre ma khôlle' if session.get('utilisateur') else 'M’entraîner avec le tuteur' }}</a>
+    </div>
+    <p class="guide-path">Objectif <span aria-hidden="true">→</span> Idée <span aria-hidden="true">→</span> Cours <span aria-hidden="true">→</span> Hypothèses <span aria-hidden="true">→</span> Preuve</p>
+  </header>
+
+  <ol class="guide-grid" aria-label="Les dix réflexes de l’oral">
+    <li class="card guide-tip">
+      <h2>Reformuler la question</h2>
+      <p>Précisez les objets, les données et ce qu’il faut établir. En physique, fixez le système, le référentiel et les hypothèses du modèle.</p>
+      <blockquote>« Je cherche à montrer que… ; l’hypothèse qui semble utile est… »</blockquote>
+    </li>
+    <li class="card guide-tip">
+      <h2>Annoncer l’idée avant le calcul</h2>
+      <p>Choisissez une piste et expliquez son intérêt. Donnez un plan court ; une liste de méthodes possibles sans choix ne fait pas avancer.</p>
+      <blockquote>« Je vais majorer ce terme pour me ramener à une série connue. »</blockquote>
+    </li>
+    <li class="card guide-tip">
+      <h2>Rattacher l’idée au cours</h2>
+      <p>Nommez le résultat pertinent et précisez ce qu’il permet de conclure. Si une définition ou une preuve est demandée, donnez-la avec précision.</p>
+      <blockquote>« Le théorème spectral me donne ici une base orthonormée de vecteurs propres. »</blockquote>
+    </li>
+    <li class="card guide-tip">
+      <h2>Vérifier les hypothèses</h2>
+      <p>Reliez les conditions du théorème aux données. Vérifiez aussi que les objets manipulés existent et que les opérations sont licites.</p>
+      <blockquote>« La matrice est réelle et symétrique : le théorème spectral s’applique. »</blockquote>
+    </li>
+    <li class="card guide-tip">
+      <h2>Rendre le raisonnement visible</h2>
+      <p>Expliquez les étapes décisives, distinguez conjecture et preuve, gardez des notations stables. Organisez le tableau et laissez le jury voir ce que vous écrivez.</p>
+      <blockquote>« Ce calcul suggère une limite ; il reste maintenant à prouver la convergence. »</blockquote>
+    </li>
+    <li class="card guide-tip">
+      <h2>Accueillir une relance sans paniquer</h2>
+      <p>Écoutez la question jusqu’au bout. Une demande de justification ne signifie pas que tout est faux : répondez au point précis, puis reprenez votre raisonnement.</p>
+      <blockquote>« Vous me demandez pourquoi cette majoration est valable : voici l’argument. »</blockquote>
+    </li>
+    <li class="card guide-tip">
+      <h2>Transformer l’indication en action</h2>
+      <p>Reformulez l’aide reçue, puis utilisez-la concrètement. Être réactif, c’est identifier la prochaine étape utile, avec le temps de réflexion nécessaire.</p>
+      <blockquote>« Votre indication me conduit à étudier les sommes partielles ; je les note S<sub>n</sub>. »</blockquote>
+    </li>
+    <li class="card guide-tip">
+      <h2>Corriger une erreur et garder le cap</h2>
+      <p>Repérez la ligne fautive, expliquez la correction et ses conséquences. Si votre argument reste valable, justifiez-le calmement ; suivez une réorientation demandée.</p>
+      <blockquote>« J’ai divisé par une quantité qui peut être nulle. Je distingue les deux cas. »</blockquote>
+    </li>
+    <li class="card guide-tip">
+      <h2>Gérer un blocage et son temps</h2>
+      <p>Dites précisément ce qui manque. Revenez à la définition, testez un cas simple ou exploitez une hypothèse inutilisée. Évitez le silence prolongé et les calculs sans objectif.</p>
+      <blockquote>« Il me manque une borne indépendante de n ; je cherche une majoration uniforme. »</blockquote>
+    </li>
+    <li class="card guide-tip">
+      <h2>Conclure et contrôler le résultat</h2>
+      <p>Répondez explicitement à la question. Vérifiez un cas limite ; en physique, contrôlez unités, signe et ordre de grandeur. Distinguez ce qui est établi de ce qui reste ouvert.</p>
+      <blockquote>« J’ai démontré la convergence ; la valeur de la somme reste à déterminer. »</blockquote>
+    </li>
+  </ol>
+
+  <section class="card guide-dialogue" aria-labelledby="dialogue-title">
+    <p class="eyebrow">UN EXEMPLE CONCRET</p>
+    <h2 id="dialogue-title">Rebondir après une objection</h2>
+    <p><strong>Sujet.</strong> Étudier la série de terme général u<sub>n</sub> = 1 / [n(n + 1)], pour n ≥ 1.</p>
+    <p><strong>Élève.</strong> « u<sub>n</sub> tend vers 0, donc la série converge. »</p>
+    <p><strong>Colleur.</strong> « Que dit cette règle pour u<sub>n</sub> = 1/n ? »</p>
+    <p><strong>Élève.</strong> « La série harmonique diverge : mon critère était insuffisant. Je reprends : u<sub>n</sub> = 1/n − 1/(n + 1). La somme partielle vaut donc S<sub>N</sub> = 1 − 1/(N + 1), qui tend vers 1. Par la définition de la convergence d’une série, la série converge et sa somme vaut 1. »</p>
+    <p class="guide-takeaway"><strong>Ce qui fait progresser l’échange :</strong> utiliser le contre-exemple, corriger l’idée, mobiliser le cours et terminer la preuve.</p>
+  </section>
+
+  <section class="guide-sources" aria-labelledby="sources-title">
+    <h2 id="sources-title">Pour aller plus loin</h2>
+    <p>Cette fiche pédagogique et son dialogue sont des exemples d’entraînement. Les repères s’appuient sur les rapports de jury <a href="https://concoursminesponts.fr/wp-content/uploads/2025/10/Rapport-Oral-2025-VF.pdf#page=7">Mines-Ponts 2025 (p. 3 et 6–8)</a> et <a href="https://www.concours-centrale-supelec.fr/sites/default/files/documents/Rapports_Jury_2025_MP.pdf#page=78">Centrale-Supélec MP 2025 (p. 78–80)</a>. Les modalités dépendent de l’épreuve.</p>
+    <a class="button" href="{{ url_for('chat') }}">Passer à la pratique</a>
+  </section>
+  <footer>Un espace pour apprendre, à votre rythme.</footer>
+</main>
+</body>
+</html>

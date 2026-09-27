@@ -8,6 +8,7 @@
 </head>
 <body>
 <main>
+  {% include "navigation.html" %}
   <header><h1>{{ 'Créer un compte' if inscription else 'Se connecter' }}</h1>
     <p>Retrouvez votre progression et votre tuteur.</p></header>
   {% if erreur %}<p class="error" role="alert">{{ erreur }}</p>{% endif %}
@@ -18,6 +19,7 @@
     <p id="identifiant-aide" class="muted">Lettres sans accent, chiffres, tirets et underscores. Majuscules et minuscules sont équivalentes.</p>
     <label for="mot_de_passe">Mot de passe</label>
     <input id="mot_de_passe" name="mot_de_passe" type="password" required maxlength="1024" autocomplete="{{ 'new-password' if inscription else 'current-password' }}">
+    {% if inscription %}{% include "champs_profil.html" %}{% endif %}
     <button type="submit">{{ "S’inscrire" if inscription else 'Se connecter' }}</button>
   </form>
   {% if inscription %}<p>Déjà un compte ? <a href="{{ url_for('auth.connexion') }}">Se connecter</a></p>

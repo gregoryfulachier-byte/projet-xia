@@ -1,0 +1,6 @@
+<nav class="site-nav" aria-label="Navigation principale">
+  <a href="{{ url_for('chat') }}"{% if request.endpoint in ('chat', 'index') %} aria-current="page"{% endif %}>Ma khôlle</a>
+  <a href="{{ url_for('guide_kholle') }}"{% if request.endpoint == 'guide_kholle' %} aria-current="page"{% endif %}>Comment réussir sa khôlle</a>
+  <a href="{{ url_for('guide_concours') }}"{% if request.endpoint == 'guide_concours' %} aria-current="page"{% endif %}>Guide des concours</a>
+  {% if session.get('utilisateur') %}<a href="{{ url_for('projet_eleve') }}"{% if request.endpoint == 'projet_eleve' %} aria-current="page"{% endif %}>Mon profil</a>{% endif %}
+</nav>
