@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bilan de khôlle · Mathématiques</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body><main>
+  {% include "compte.html" %}
+  <h1>Bilan de votre khôlle</h1>
+  <p>{{ bilan.chapitre|nom_chapitre }} · {{ bilan.fin[:10] }} à {{ bilan.fin[11:16] }} UTC</p>
+  <p>Ce bilan reprend les évaluations de la séance. Une question non évaluée ne constitue pas un échec.</p>
+  <p id="math-warning" class="muted" hidden>Le rendu des formules est indisponible. Le texte reste lisible.</p>
+  <section class="card" aria-label="Résumé">
+    <p><strong>{{ bilan.compteurs.valide }}</strong> question(s) validée(s) ·
+       <strong>{{ bilan.compteurs.a_retravailler }}</strong> à retravailler ·
+       <strong>{{ bilan.compteurs.a_confirmer }}</strong> à confirmer ·
+       <strong>{{ bilan.compteurs.non_evalue }}</strong> non évaluée(s)</p>
+    {% if not bilan.points %}<p>Aucune question exploitable n’a encore été enregistrée pour cette séance.</p>{% endif %}
+  </section>
+  {% set titres = {'valide': 'Validé pendant la séance', 'a_retravailler': 'À retravailler', 'a_confirmer': 'À confirmer', 'non_evalue': 'Non évalué'} %}
+  {% for point in bilan.points %}
+  <section class="card math">
+    <h2>{{ titres[point.statut] }}</h2>
+    <p>{{ point.question }}</p>
+    {% if point.justification %}<p>{{ point.justification }}</p>{% endif %}
+    {% if point.autonomie == 'avec_aide' %}
+    <p>Aide enregistrée : {{ point.indices_donnes }} indice(s), {{ point.rappels_cours }} rappel(s) de cours.</p>
+    {% else %}<p class="muted">Autonomie non mesurée pour cette question.</p>{% endif %}
+    {% if point.erreur_reformulee %}<p>Une reformulation de l’erreur a été enregistrée.</p>{% endif %}
+    <details><summary>Voir les réponses qui fondent ce bilan</summary>
+      {% for reponse in point.reponses %}<p class="prose">{{ reponse }}</p>
+      {% else %}<p>Aucune réponse enregistrée.</p>{% endfor %}
+    </details>
+  </section>
+  {% endfor %}
+  <section class="card math">
+    <h2>Pour la prochaine séance</h2>
+    {% if bilan.priorites %}<ul>
+      {% for point in bilan.priorites %}<li>{{ 'Retravailler' if point.statut == 'a_retravailler' else 'Vérifier' }} : {{ point.question }}</li>{% endfor %}
+    </ul>{% else %}<p>Approfondir les questions validées avec une variante, puis explorer une autre notion du chapitre.</p>{% endif %}
+  </section>
+  <details class="card"><summary>Relire l’échange complet</summary>
+    {% for message in bilan.messages %}<article class="math">
+      <h2>{{ 'Vous' if message.role == 'user' else 'Tuteur' }}</h2>
+      <p class="prose">{{ message.content }}</p>
+    </article>{% endfor %}
+  </details>
+  <p><a href="{{ url_for('bilans') }}">Mes bilans</a> · <a href="{{ url_for('chat') }}">Retour au tuteur</a></p>
+</main></body>
+</html>
