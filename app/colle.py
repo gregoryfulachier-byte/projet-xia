@@ -6,6 +6,7 @@ from uuid import uuid4
 
 from pipelex_sdk.client import PipelexAPIClient
 from app.profil import Profil
+from app.bilan import dernier_bilan, maintenant
 from app.chapitres import chapitre_catalogue, donnees_publiques
 from app.generated.progression_colle.models import Performance, Decision
 
@@ -33,11 +34,14 @@ class Colle:
         self.tour_observe = -1
         self.nouvelle_tache_autorisee = True
         self.session_colle = uuid4().hex
+        self.debut_colle = maintenant()
 
     def etat_colle(self):
         return donnees_publiques({"chapitre": self.chapitre, "etape": self.etape,
                 "tache": self.tache, "nouvelle_tache_autorisee": self.nouvelle_tache_autorisee,
-                "taches_validees": self.taches_validees()})
+                "taches_validees": self.taches_validees(),
+                "bilan_precedent": dernier_bilan(Profil.charger(self.chemin_profil),
+                                                self.chapitre, self.session_colle)})
 
     def taches_validees(self):
         profil = Profil.charger(self.chemin_profil)
